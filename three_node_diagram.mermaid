@@ -1,0 +1,33 @@
+graph LR
+    subgraph VxSim0["VxSim Instance 0 — Node A<br/>(Audio Sensor)"]
+        direction TB
+        A1["tAudioSample<br/>Period: 10ms | WCET: 3ms<br/>Reads 16kHz PCM from WAV"]
+        A2["tFeatureExtract<br/>Period: 20ms | WCET: 12ms<br/>Chunk raw waveform for Wav2Vec2"]
+        A3["tUdpTransmit<br/>Period: 20ms | WCET: 3ms<br/>Sends audio chunk + timestamp"]
+        A1 --> A2 --> A3
+    end
+
+    subgraph HostGPU["Host Process — Node B<br/>(Inference on RTX 5060Ti)"]
+        direction TB
+        B1["recv_features<br/>Period: 20ms | WCET: 2ms<br/>UDP receive from Node A"]
+        B2["kws_inference<br/>Period: 50ms<br/>WCET: 40ms FP32 / 18ms INT8<br/>wav2vec2-base-superb-ks<br/>(pre-trained, no training needed)"]
+        B3["send_result<br/>Period: 20ms | WCET: 2ms<br/>Sends: stop / go / silence / unknown"]
+        B1 --> B2 --> B3
+    end
+
+    subgraph VxSim1["VxSim Instance 1 — Node C<br/>(Actuator Control)"]
+        direction TB
+        C1["tUdpReceive<br/>Sporadic | WCET: 3ms<br/>Receives classified command"]
+        C2["tSafetyValidate<br/>Period: 20ms | WCET: 5ms<br/>Debounce: 2 consecutive matches"]
+        C3["tActuatorTrigger<br/>Sporadic | WCET: 8ms<br/>Logs motor stop / alarm trigger"]
+        C4["tWatchdog<br/>Period: 100ms | WCET: 2ms<br/>Failsafe if silent > 500ms"]
+        C1 --> C2 --> C3
+        C4 -.->|"monitors heartbeat"| C1
+    end
+
+    A3 -- "UDP via simnet<br/>+ jitter/loss proxy" --> B1
+    B3 -- "UDP via simnet<br/>+ jitter/loss proxy" --> C1
+
+    style VxSim0 fill:#1a365d,stroke:#63b3ed,color:#fff
+    style HostGPU fill:#22543d,stroke:#68d391,color:#fff
+    style VxSim1 fill:#742a2a,stroke:#fc8181,color:#fff
