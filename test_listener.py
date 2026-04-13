@@ -1,14 +1,14 @@
 # test_listener.py — Run on your Windows host to verify Node A is sending packets
 # Usage: python test_listener.py
 #
-# This binds to Node B's IP:port and prints every packet received from Node A.
+# This binds to UDP port 5001 and prints every packet received from Node A.
 # Use this BEFORE building Node B to make sure the VxSim networking works.
 
 import socket
 import struct
 import time
 
-NODE_B_IP = "192.168.200.2"   # Node B's simnet IP
+NODE_B_IP = "0.0.0.0"         # Listen on all host interfaces for VxSim NAT
 NODE_B_PORT = 5001
 
 sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
