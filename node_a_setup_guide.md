@@ -35,6 +35,39 @@ WHY THIS MATTERS:
 
 ## STEP 1: Install Wind River Workbench
 
+### Actual setup used on this machine
+
+Wind River is already installed at:
+
+```text
+C:\WindRiver
+```
+
+The installed version was verified with:
+
+```powershell
+C:\WindRiver\wrenv.exe -p vxworks/21.07 -o print_env
+```
+
+Important output:
+
+```text
+WIND_HOME=C:\WindRiver
+WIND_BASE=C:\WindRiver\vxworks\21.07
+WIND_PLATFORM=vxworks-7
+WIND_RELEASE_ID=21.07
+WIND_TOOLS=C:\WindRiver\workbench-4
+```
+
+Use the VxWorks 7 / 21.07 flow for this project. Do not use the VxWorks 6.9 steps for this machine.
+
+The simulator tools are present at:
+
+```text
+C:\WindRiver\vxworks\21.07\host\x86-win32\bin\vxsim.exe
+C:\WindRiver\vxworks\21.07\host\x86-win32\bin\vxsimnetd.exe
+```
+
 ### If your course provides lab machines with VxWorks pre-installed:
 - Just log in, open Wind River Workbench, skip to Step 2
 
@@ -67,7 +100,59 @@ WHY THIS MATTERS:
 This is where you build a VxWorks kernel image that will run inside VxSim
 with networking enabled.
 
-### VxWorks 7 Flow:
+### Actual VxWorks 21.07 flow used on this machine
+
+For this setup, the working route was to copy Wind River's prebuilt VxSim Windows LLVM image project and use it as the Node A image project.
+
+The project copy command was:
+
+```powershell
+C:\WindRiver\vxworks\21.07\host\x86-win64\bin\vxprj.bat vip copy C:/WindRiver/vxworks/21.07/samples/prebuilt_projects/vip_vxsim_windows_llvm/vip_vxsim_windows_llvm.wpj C:/WindRiver/workbench-4/workspace/nodeA_vip/nodeA_vip.wpj
+```
+
+Workbench reported:
+
+```text
+Project copied in : C:/WindRiver/workbench-4/workspace/nodeA_vip/nodeA_vip.wpj
+```
+
+The Node A VxWorks Image Project is:
+
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_vip\nodeA_vip.wpj
+```
+
+If Workbench says the project cannot be imported because it already exists in the workspace, that is OK. Cancel the import dialog and find `nodeA_vip` in Project Explorer.
+
+Build it from Workbench:
+
+```text
+Right-click nodeA_vip > Build Project
+```
+
+On this machine, the first build failed because Windows Application Control blocked Wind River's bundled `touch.exe`:
+
+```text
+C:\WindRiver\vxworks\21.07\host\msys2-x86-win64\usr\bin\touch.exe
+```
+
+The workaround was to manually create the stamp files:
+
+```powershell
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\versionTag
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\_user_objs.nm
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\_user_objs.cdf
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\recalc.tm
+```
+
+After rebuilding, the image was created successfully:
+
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_vip\default\vxWorks
+C:\WindRiver\workbench-4\workspace\nodeA_vip\default\vxWorks.sym
+```
+
+### Generic VxWorks 7 flow (reference only)
 
 1. Open Wind River Workbench
 2. File > New > VxWorks Source Build Project
@@ -106,6 +191,59 @@ INCLUDE_RTP                — real-time processes (optional)
 ---
 
 ## STEP 3: Launch VxSim Instance 0 (Node A)
+
+### Actual Workbench connection used on this machine
+
+Create a VxWorks Simulator connection with:
+
+```text
+Target Type: VxWorks Simulator
+Connection Mode: Application Mode
+Kernel Image: C:\WindRiver\workbench-4\workspace\nodeA_vip\default\vxWorks
+Connect on finish: checked
+Start debugger after connect: unchecked
+```
+
+Important: make sure the Kernel Image points to the new `nodeA_vip` image, not the original Wind River sample image.
+
+Correct:
+
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_vip\default\vxWorks
+```
+
+Incorrect:
+
+```text
+C:\WindRiver\vxworks\21.07\samples\prebuilt_projects\vip_vxsim_windows_llvm\default\vxWorks
+```
+
+The simulator should boot and reach the VxWorks shell:
+
+```text
+->
+```
+
+On this machine, `ifShow` showed NAT networking:
+
+```text
+-> ifShow
+lo0 <UP RUNNING LOOPBACK MULTICAST NOARP ALLMULTI >
+        127.0.0.1
+
+simnet_nat0 <UP RUNNING SIMPLEX BROADCAST MULTICAST >
+        10.0.10.2
+```
+
+This means the simulator is currently using `10.0.10.2` through NAT, not the original planned static `192.168.200.1` simnet address. This may require adjusting the Node B destination IP later.
+
+Task verification:
+
+```text
+-> i
+```
+
+Expected running tasks include `tShell0`, `tNet0`, `tNetConf`, and idle tasks. If the shell prints `Shell task 'tShell0' restarted...` but returns to the `->` prompt, the simulator is still usable.
 
 ### From Wind River Workbench:
 
@@ -161,9 +299,27 @@ Create a Downloadable Kernel Module (DKM) project for your Node A tasks.
 
 1. File > New > VxWorks Downloadable Kernel Module (DKM)
 2. Name: `nodeA_tasks`
-3. This creates a C project that compiles to a `.out` file you load into VxSim
+3. Create the project in the Workbench workspace
+4. Base the project on a source build project
+5. Select the prebuilt VSB:
 
-### Create the source file: `nodeA.c`
+```text
+C:\WindRiver\vxworks\21.07\samples\prebuilt_projects\vsb_vxsim_windows
+```
+
+Workbench creates the project at:
+
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_tasks
+```
+
+The generated starter file is:
+
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_tasks\dkm.c
+```
+
+### Replace the starter file: `dkm.c`
 
 ```c
 /* nodeA.c — Audio Sensor Node (VxSim Instance 0)
@@ -596,18 +752,45 @@ void nodeA_status(void)
 
 ### Compile and Load:
 
-1. Add `nodeA.c` to your DKM project in Workbench
-2. Build the project (Project > Build)
-3. This produces `nodeA_tasks.out`
-4. In the VxWorks shell (connected to VxSim instance 0):
+1. Paste the Node A code into `C:\WindRiver\workbench-4\workspace\nodeA_tasks\dkm.c`
+2. Build the project from Workbench: `Right-click nodeA_tasks > Build Project`
+3. This produces:
 
-```
--> ld < "/passFs0/path/to/nodeA_tasks.out"
--> nodeA_start "/passFs0/test_audio.wav"
+```text
+C:\WindRiver\workbench-4\workspace\nodeA_tasks\vsb_vxsim_windows_SIMNTllvm_LP64_LARGE_SMP\nodeA_tasks\Debug\nodeA_tasks.out
 ```
 
-`passFs0` maps to your Windows filesystem, so `/passFs0/Users/YourName/project/test_audio.wav`
-maps to `C:\Users\YourName\project\test_audio.wav`.
+The DKM build may still print `touch.exe` Application Control warnings, but the build is successful if Workbench prints:
+
+```text
+Build Finished in Project 'nodeA_tasks'
+```
+
+4. In the VxWorks shell connected to VxSim, load the module:
+
+```
+-> ld < "/host.host/C:/WindRiver/workbench-4/workspace/nodeA_tasks/vsb_vxsim_windows_SIMNTllvm_LP64_LARGE_SMP/nodeA_tasks/Debug/nodeA_tasks.out"
+```
+
+5. Confirm the module loaded:
+
+```text
+-> start
+```
+
+Expected output:
+
+```text
+nodeA_tasks loaded. Use nodeA_start(path), nodeA_status(), nodeA_stop().
+```
+
+6. Start Node A with the test audio file:
+
+```text
+-> nodeA_start "/host.host/C:/Users/Armaan/Desktop/4331project/test_audio.wav"
+```
+
+In this VxSim setup, the host filesystem path uses `/host.host/C:/...`.
 
 
 ---
@@ -639,7 +822,11 @@ ffmpeg -f lavfi -i "sine=frequency=440:duration=5" \
        -ar 16000 -ac 1 -sample_fmt s16 test_tone.wav
 ```
 
-Place the WAV file somewhere on your C: drive that VxSim can access via passFs.
+Place the WAV file somewhere on your C: drive that VxSim can access. In this setup, the working path style was `/host.host/C:/...`; for example:
+
+```text
+/host.host/C:/Users/Armaan/Desktop/4331project/test_audio.wav
+```
 
 
 ---
@@ -649,7 +836,7 @@ Place the WAV file somewhere on your C: drive that VxSim can access via passFs.
 ### Test 1 — Tasks are running:
 In the VxWorks shell:
 ```
--> nodeA_start "/passFs0/Users/YourName/project/test_audio.wav"
+-> nodeA_start "/host.host/C:/Users/Armaan/Desktop/4331project/test_audio.wav"
 -> i             (shows all tasks and their states)
 -> nodeA_status  (shows ring buffer fill level and packets sent)
 ```
@@ -688,6 +875,8 @@ python test_listener.py
 
 You should see packets arriving every ~20ms with incrementing sequence numbers.
 
+Note for the current Workbench/VxSim setup: `ifShow` showed `simnet_nat0` with IP `10.0.10.2`, so the original `192.168.200.2` Node B address may need to be changed later. If packets do not arrive, update `NODE_B_IP` in `dkm.c` and rebuild the DKM, or reconfigure VxSim networking to use the original static simnet plan.
+
 ### Test 3 — Verify timing:
 ```
 -> spy    (VxWorks CPU utilization monitor)
@@ -707,6 +896,30 @@ You should see:
 
 ## STEP 7: Troubleshooting
 
+### Build fails because Application Control blocks `touch.exe`
+On this machine, Windows Application Control blocked Wind River's bundled `touch.exe`:
+
+```text
+C:\WindRiver\vxworks\21.07\host\msys2-x86-win64\usr\bin\touch.exe
+```
+
+The error looks like:
+
+```text
+make (e=4551): An Application Control policy has blocked this file.
+```
+
+For the `nodeA_vip` image build, manually creating the expected stamp files allowed the build to complete:
+
+```powershell
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\versionTag
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\_user_objs.nm
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\default\_user_objs.cdf
+New-Item -ItemType File -Force C:\WindRiver\workbench-4\workspace\nodeA_vip\recalc.tm
+```
+
+For a cleaner long-term setup, Windows security should allow the Wind River toolchain utilities.
+
 ### "Cannot create UDP socket"
 → Your VxWorks image doesn't have networking. Rebuild with INCLUDE_NETWORK
   and INCLUDE_SIMNET. Make sure you launched VxSim with `-d simnet`.
@@ -716,10 +929,18 @@ You should see:
   192.168.200.2. Run `ifShow` in VxWorks shell to verify interface config.
 → Check if the Python listener is actually bound to 192.168.200.2
 
+For the current NAT setup, `ifShow` reported Node A as `10.0.10.2`. If UDP packets do not arrive, update the listener and `NODE_B_IP` to match the active VxSim/host network rather than assuming the original `192.168.200.x` plan.
+
 ### "cannot open WAV file"
 → Path issue. In VxSim, your Windows C: drive is accessible as `/passFs0/`.
   So `C:\Users\nop\project\test.wav` becomes `/passFs0/Users/nop/project/test.wav`.
   Note: forward slashes, not backslashes.
+
+For the current VxWorks 21.07 simulator connection, the path that worked was `/host.host/C:/...`; for example:
+
+```text
+/host.host/C:/Users/Armaan/Desktop/4331project/test_audio.wav
+```
 
 ### Tasks not running / no output
 → Check `i` command — are tasks in SUSPENDED state?

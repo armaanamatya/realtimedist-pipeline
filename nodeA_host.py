@@ -128,9 +128,10 @@ class NoiseReader:
 # ============================================================
 
 class NodeA:
-    def __init__(self, wav_path=None, local=False):
+    def __init__(self, wav_path=None, local=False, target_port_override=None):
         self.local = local
         self.target_ip = "127.0.0.1" if local else NODE_B_IP
+        self.target_port = target_port_override or NODE_B_PORT
         self.ring = RingBuffer()
         self.chunk_ready = None
         self.chunk_lock = threading.Lock()
@@ -191,7 +192,7 @@ class NodeA:
         packet = header + chunk.tobytes()
 
         try:
-            self.sock.sendto(packet, (self.target_ip, NODE_B_PORT))
+            self.sock.sendto(packet, (self.target_ip, self.target_port))
         except OSError as e:
             print(f"  nodeA: sendto failed: {e}")
 
@@ -208,7 +209,7 @@ class NodeA:
         print(f"\n{'='*50}")
         print(f"  Node A — Audio Sensor (Host Fallback)")
         print(f"{'='*50}")
-        print(f"  Target: {self.target_ip}:{NODE_B_PORT}")
+        print(f"  Target: {self.target_ip}:{self.target_port}")
         print(f"  Tasks: tAudioSample(10ms) tFeatureExtract(20ms) tUdpTransmit(20ms)")
         print(f"  Press Ctrl+C to stop.\n")
 
@@ -271,9 +272,12 @@ def main():
                         help="WAV file path (16kHz, 16-bit, mono)")
     parser.add_argument("--local", action="store_true",
                         help="Use 127.0.0.1 instead of simnet IPs (all nodes on one host)")
+    parser.add_argument("--target-port", type=int, default=None,
+                        help="Override target port (e.g. 6001 to send through proxy)")
     args = parser.parse_args()
 
-    node = NodeA(wav_path=args.wav, local=args.local)
+    node = NodeA(wav_path=args.wav, local=args.local,
+                 target_port_override=args.target_port)
     node.run()
 
 

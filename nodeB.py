@@ -93,12 +93,14 @@ class AudioBuffer:
 # ============================================================
 
 class NodeB:
-    def __init__(self, precision="fp32", test_mode=False, test_wav=None, log_file=None, local=False):
+    def __init__(self, precision="fp32", test_mode=False, test_wav=None, log_file=None, local=False, target_port_override=None, confidence_threshold=CONFIDENCE_THRESHOLD):
         self.precision = precision
         self.test_mode = test_mode
         self.test_wav = test_wav
         self.log_file = log_file
         self.local = local
+        self.target_port = target_port_override or NODE_C_PORT
+        self.confidence_threshold = confidence_threshold
 
         self.audio_buffer = AudioBuffer()
         self.result_queue = Queue()
@@ -243,7 +245,7 @@ class NodeB:
         self.stats["inferences_run"] += 1
 
         # Map label to command
-        if label in COMMAND_LABELS and confidence > CONFIDENCE_THRESHOLD:
+        if label in COMMAND_LABELS and confidence > self.confidence_threshold:
             command = label.upper()
             forward = True
         else:
@@ -274,7 +276,7 @@ class NodeB:
 
         try:
             target_ip = "127.0.0.1" if self.local else NODE_C_IP
-            self._send_sock.sendto(packet, (target_ip, NODE_C_PORT))
+            self._send_sock.sendto(packet, (target_ip, self.target_port))
         except OSError:
             pass  # Node C may not be running yet
 
@@ -302,6 +304,7 @@ class NodeB:
         # Setup sockets
         bind_ip = "0.0.0.0" if (self.test_mode or self.local) else NODE_B_IP
         send_ip = "127.0.0.1" if self.local else NODE_C_IP
+        send_port = self.target_port
         self._recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._recv_sock.bind((bind_ip, NODE_B_PORT))
         self._recv_sock.settimeout(0.1)
@@ -309,7 +312,7 @@ class NodeB:
         self._send_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         print(f"nodeB: Listening on {bind_ip}:{NODE_B_PORT}")
-        print(f"nodeB: Sending to {send_ip}:{NODE_C_PORT}")
+        print(f"nodeB: Sending to {send_ip}:{send_port}")
 
         # CSV log file
         if self.log_file:
@@ -511,6 +514,10 @@ def main():
                         help="CSV log file path for timing data")
     parser.add_argument("--local", action="store_true",
                         help="Use 127.0.0.1 instead of simnet IPs (all nodes on one host)")
+    parser.add_argument("--target-port", type=int, default=None,
+                        help="Override Node C target port (e.g. 6002 to send through proxy)")
+    parser.add_argument("--confidence-threshold", type=float, default=CONFIDENCE_THRESHOLD,
+                        help=f"Confidence threshold for forwarding commands (default: {CONFIDENCE_THRESHOLD})")
     args = parser.parse_args()
 
     node = NodeB(
@@ -519,6 +526,8 @@ def main():
         test_wav=args.test_wav,
         log_file=args.log_file,
         local=args.local,
+        target_port_override=args.target_port,
+        confidence_threshold=args.confidence_threshold,
     )
     node.load_model()
     node.run()
