@@ -26,6 +26,8 @@ Single-command local run:
 python run_pipeline.py --wav test_audio.wav --precision fp32 --duration 20 --confidence-threshold 0.30
 ```
 
+Each pipeline run writes measurement files under `results/run_YYYYMMDD_HHMMSS/` by default. Use `--run-id <name>` to reuse a known folder name or `--no-results` to disable generated CSV/JSON output.
+
 VxWorks Node A to host Node B:
 
 ```powershell
@@ -50,6 +52,7 @@ python nodeB.py --local --precision fp32
 |-- nodeA_host.py
 |-- nodeB.py
 |-- nodeC_host.py
+|-- results_logging.py
 |-- run_pipeline.py
 |-- udp_proxy.py
 |-- generate_test_wav.py
@@ -57,4 +60,4 @@ python nodeB.py --local --precision fp32
 `-- requirements.txt
 ```
 
-Generated files such as `venv/`, `__pycache__/`, WAV test audio, and CSV experiment logs are ignored by Git.
+Generated files such as `venv/`, `__pycache__/`, WAV test audio, and repo-root `results/` experiment logs are ignored by Git.

@@ -19,9 +19,12 @@ import struct
 import sys
 import threading
 import time
+from pathlib import Path
 from queue import Queue, Empty
 
 import numpy as np
+
+from results_logging import ResultsLogger, timing_stats
 
 # ============================================================
 # CONFIGURATION
@@ -93,7 +96,10 @@ class AudioBuffer:
 # ============================================================
 
 class NodeB:
-    def __init__(self, precision="fp32", test_mode=False, test_wav=None, log_file=None, local=False, target_port_override=None, confidence_threshold=CONFIDENCE_THRESHOLD):
+    def __init__(self, precision="fp32", test_mode=False, test_wav=None,
+                 log_file=None, local=False, target_port_override=None,
+                 confidence_threshold=CONFIDENCE_THRESHOLD, results_dir="results",
+                 run_id=None, no_results=False, duration=None, stop_at=None):
         self.precision = precision
         self.test_mode = test_mode
         self.test_wav = test_wav
@@ -101,6 +107,8 @@ class NodeB:
         self.local = local
         self.target_port = target_port_override or NODE_C_PORT
         self.confidence_threshold = confidence_threshold
+        self.duration = duration
+        self.stop_at = stop_at
 
         self.audio_buffer = AudioBuffer()
         self.result_queue = Queue()
@@ -123,6 +131,38 @@ class NodeB:
         # CSV writer
         self._csv_file = None
         self._csv_writer = None
+        self._results = ResultsLogger(
+            "nodeB", results_dir=results_dir, run_id=run_id, enabled=not no_results
+        )
+        self._inference_csv = self._results.csv_table(
+            "nodeB_inference.csv",
+            [
+                "seq_num",
+                "origin_timestamp_us",
+                "label",
+                "confidence",
+                "command",
+                "forwarded",
+                "infer_ms",
+                "precision",
+                "threshold",
+            ],
+        )
+        self._send_csv = self._results.csv_table(
+            "nodeB_send.csv",
+            [
+                "seq_num",
+                "origin_timestamp_us",
+                "command",
+                "confidence",
+                "send_ms",
+                "total_ms",
+                "target_ip",
+                "target_port",
+                "precision",
+                "send_error",
+            ],
+        )
 
         # Model (loaded in load_model)
         self.model = None
@@ -254,6 +294,18 @@ class NodeB:
 
         print(f"  inference: {label:<10s} conf={confidence:.3f} "
               f"time={infer_ms:.1f}ms cmd={command} fwd={forward}")
+        if self._inference_csv:
+            self._inference_csv.writerow({
+                "seq_num": seq_num,
+                "origin_timestamp_us": origin_ts,
+                "label": label,
+                "confidence": f"{confidence:.4f}",
+                "command": command,
+                "forwarded": str(forward).lower(),
+                "infer_ms": f"{infer_ms:.3f}",
+                "precision": self.precision,
+                "threshold": f"{self.confidence_threshold:.4f}",
+            })
 
         if forward:
             self.result_queue.put((seq_num, origin_ts, command, confidence, infer_ms))
@@ -274,10 +326,12 @@ class NodeB:
         packet = struct.pack("<IQ", seq_num, origin_ts) + cmd_bytes + \
                  struct.pack("<f", confidence)
 
+        target_ip = "127.0.0.1" if self.local else NODE_C_IP
+        send_error = ""
         try:
-            target_ip = "127.0.0.1" if self.local else NODE_C_IP
             self._send_sock.sendto(packet, (target_ip, self.target_port))
-        except OSError:
+        except OSError as exc:
+            send_error = str(exc)
             pass  # Node C may not be running yet
 
         send_ms = (time.perf_counter() - t_start) * 1000
@@ -296,6 +350,19 @@ class NodeB:
                 f"{infer_ms + send_ms:.2f}", command, f"{confidence:.4f}",
                 self.precision
             ])
+        if self._send_csv:
+            self._send_csv.writerow({
+                "seq_num": seq_num,
+                "origin_timestamp_us": origin_ts,
+                "command": command,
+                "confidence": f"{confidence:.4f}",
+                "send_ms": f"{send_ms:.3f}",
+                "total_ms": f"{infer_ms + send_ms:.3f}",
+                "target_ip": target_ip,
+                "target_port": self.target_port,
+                "precision": self.precision,
+                "send_error": send_error,
+            })
 
     # ---- Main run loop ----
 
@@ -313,9 +380,12 @@ class NodeB:
 
         print(f"nodeB: Listening on {bind_ip}:{NODE_B_PORT}")
         print(f"nodeB: Sending to {send_ip}:{send_port}")
+        if self._results.enabled:
+            print(f"nodeB: Results -> {self._results.run_dir}")
 
         # CSV log file
         if self.log_file:
+            Path(self.log_file).parent.mkdir(parents=True, exist_ok=True)
             self._csv_file = open(self.log_file, "w", newline="")
             self._csv_writer = csv.writer(self._csv_file)
             self._csv_writer.writerow([
@@ -352,11 +422,29 @@ class NodeB:
 
         print("nodeB: All tasks running. Press Ctrl+C to stop.\n")
 
+        completed = False
+        deadline = time.perf_counter() + self.duration if self.duration is not None else None
         try:
             while True:
-                time.sleep(1)
+                now_perf = time.perf_counter()
+                now_wall = time.time()
+                if deadline is not None and now_perf >= deadline:
+                    completed = True
+                    break
+                if self.stop_at is not None and now_wall >= self.stop_at:
+                    completed = True
+                    break
+
+                sleep_time = 1.0
+                if deadline is not None:
+                    sleep_time = min(sleep_time, max(0.01, deadline - now_perf))
+                if self.stop_at is not None:
+                    sleep_time = min(sleep_time, max(0.01, self.stop_at - now_wall))
+                time.sleep(sleep_time)
         except KeyboardInterrupt:
             print("\nnodeB: Shutting down ...")
+        if completed:
+            print("\nnodeB: Duration complete; shutting down ...")
 
         self._running.clear()
         if mock:
@@ -369,6 +457,7 @@ class NodeB:
             self._csv_file.close()
 
         self.print_summary()
+        self._results.close()
 
     def print_summary(self):
         """Print timing statistics."""
@@ -400,6 +489,35 @@ class NodeB:
         else:
             print("\n  Overruns: 0")
         print("=" * 60)
+
+        overruns_by_task = {}
+        for task_name, _elapsed_ms, _period_ms in overruns:
+            overruns_by_task[task_name] = overruns_by_task.get(task_name, 0) + 1
+
+        self._results.write_summary("nodeB_summary.json", {
+            "node": "nodeB",
+            "precision": self.precision,
+            "confidence_threshold": self.confidence_threshold,
+            "local": self.local,
+            "test_mode": self.test_mode,
+            "target_port": self.target_port,
+            "stats": {
+                **self.stats,
+                "commands_forwarded": self.stats["commands_sent"],
+            },
+            "timing": {
+                "recv": timing_stats(self.timing["recv"]),
+                "inference": timing_stats(self.timing["inference"]),
+                "send": timing_stats(self.timing["send"]),
+                "e2e": timing_stats(self.timing["e2e"]),
+            },
+            "overrun_count": len(overruns),
+            "overruns_by_task": overruns_by_task,
+            "overruns": [
+                {"task": name, "elapsed_ms": elapsed, "period_ms": period}
+                for name, elapsed, period in overruns
+            ],
+        })
 
 
 # ============================================================
@@ -518,6 +636,15 @@ def main():
                         help="Override Node C target port (e.g. 6002 to send through proxy)")
     parser.add_argument("--confidence-threshold", type=float, default=CONFIDENCE_THRESHOLD,
                         help=f"Confidence threshold for forwarding commands (default: {CONFIDENCE_THRESHOLD})")
+    parser.add_argument("--results-dir", default="results",
+                        help="Directory for generated results (default: results)")
+    parser.add_argument("--run-id", default=None,
+                        help="Run folder name shared across nodes")
+    parser.add_argument("--no-results", action="store_true",
+                        help="Disable generated CSV/JSON result files")
+    parser.add_argument("--duration", type=float, default=None,
+                        help="Run duration in seconds before clean shutdown")
+    parser.add_argument("--stop-at", type=float, default=None, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     node = NodeB(
@@ -528,6 +655,11 @@ def main():
         local=args.local,
         target_port_override=args.target_port,
         confidence_threshold=args.confidence_threshold,
+        results_dir=args.results_dir,
+        run_id=args.run_id,
+        no_results=args.no_results,
+        duration=args.duration,
+        stop_at=args.stop_at,
     )
     node.load_model()
     node.run()

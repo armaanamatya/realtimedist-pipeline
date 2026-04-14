@@ -18,6 +18,8 @@ import time
 
 import numpy as np
 
+from results_logging import ResultsLogger, timing_stats
+
 # ============================================================
 # CONFIGURATION
 # ============================================================
@@ -41,9 +43,12 @@ WATCHDOG_PERIOD = 0.100       # 100ms — tWatchdog
 # ============================================================
 
 class NodeC:
-    def __init__(self, local=False):
+    def __init__(self, local=False, results_dir="results", run_id=None,
+                 no_results=False, duration=None, stop_at=None):
         self.local = local
         self.bind_ip = "0.0.0.0" if local else NODE_C_IP
+        self.duration = duration
+        self.stop_at = stop_at
         self._running = threading.Event()
 
         # Received commands queue
@@ -68,6 +73,24 @@ class NodeC:
             "actuator_triggers": 0,
             "watchdog_failsafes": 0,
         }
+        self._results = ResultsLogger(
+            "nodeC", results_dir=results_dir, run_id=run_id, enabled=not no_results
+        )
+        self._events_csv = self._results.csv_table(
+            "nodeC_events.csv",
+            [
+                "event",
+                "seq_num",
+                "command",
+                "confidence",
+                "action",
+                "elapsed_ms",
+                "since_last_ms",
+                "actuator_state",
+                "timestamp_perf",
+                "note",
+            ],
+        )
 
     def _periodic_loop(self, name, func, period):
         while self._running.is_set():
@@ -78,7 +101,18 @@ class NodeC:
             if sleep_time > 0:
                 time.sleep(sleep_time)
             else:
-                self.timing["overruns"].append((name, elapsed * 1000, period * 1000))
+                elapsed_ms = elapsed * 1000
+                period_ms = period * 1000
+                self.timing["overruns"].append((name, elapsed_ms, period_ms))
+                if self._events_csv:
+                    self._events_csv.writerow({
+                        "event": "overrun",
+                        "action": name,
+                        "elapsed_ms": f"{elapsed_ms:.3f}",
+                        "since_last_ms": f"{period_ms:.3f}",
+                        "actuator_state": self._actuator_state,
+                        "timestamp_perf": f"{time.perf_counter():.6f}",
+                    })
 
     # ---- Task 1: tUdpReceive (sporadic, polled at 20ms) ----
     def _udp_receive(self):
@@ -94,6 +128,15 @@ class NodeC:
         # Parse: [seq:4][ts:8][cmd:16][conf:4] = 32 bytes
         if len(data) < 32:
             print(f"  nodeC: WARNING — short packet ({len(data)} bytes)")
+            if self._events_csv:
+                self._events_csv.writerow({
+                    "event": "receive",
+                    "action": "short_packet",
+                    "elapsed_ms": "0.000",
+                    "actuator_state": self._actuator_state,
+                    "timestamp_perf": f"{time.perf_counter():.6f}",
+                    "note": f"{len(data)} bytes from {addr}",
+                })
             return
 
         seq_num = struct.unpack("<I", data[0:4])[0]
@@ -114,6 +157,18 @@ class NodeC:
 
         elapsed_ms = (time.perf_counter() - t_start) * 1000
         self.timing["recv"].append(elapsed_ms)
+        if self._events_csv:
+            self._events_csv.writerow({
+                "event": "receive",
+                "seq_num": seq_num,
+                "command": command,
+                "confidence": f"{confidence:.4f}",
+                "action": "queued",
+                "elapsed_ms": f"{elapsed_ms:.3f}",
+                "actuator_state": self._actuator_state,
+                "timestamp_perf": f"{time.perf_counter():.6f}",
+                "note": f"from {addr[0]}:{addr[1]} ts={timestamp_us}",
+            })
 
         print(f"  nodeC: recv #{seq_num} cmd={command} conf={confidence:.3f}")
 
@@ -161,8 +216,20 @@ class NodeC:
         e2e_note = ""
         if cmd_info.get("ts"):
             # Note: cross-clock-domain, approximate
-            recv_delay_ms = (cmd_info["recv_time"] - now) * 1000  # will be negative
-            e2e_note = f" (processing={abs(recv_delay_ms):.1f}ms)"
+            processing_ms = (now - cmd_info["recv_time"]) * 1000
+            e2e_note = f" (processing={processing_ms:.1f}ms)"
+
+        if self._events_csv:
+            self._events_csv.writerow({
+                "event": "actuator",
+                "seq_num": cmd_info["seq"],
+                "command": cmd_info["cmd"],
+                "confidence": f"{cmd_info['conf']:.4f}",
+                "action": action,
+                "elapsed_ms": f"{(now - cmd_info['recv_time']) * 1000:.3f}",
+                "actuator_state": self._actuator_state,
+                "timestamp_perf": f"{now:.6f}",
+            })
 
         print(f"\n  *** ACTUATOR: {action} *** "
               f"(seq={cmd_info['seq']} conf={cmd_info['conf']:.3f}){e2e_note}\n")
@@ -176,6 +243,15 @@ class NodeC:
             self._watchdog_triggered = True
             self.stats["watchdog_failsafes"] += 1
             self._actuator_state = "FAILSAFE_STOP"
+            if self._events_csv:
+                self._events_csv.writerow({
+                    "event": "watchdog",
+                    "action": "FAILSAFE_STOP",
+                    "since_last_ms": f"{elapsed_since_last:.3f}",
+                    "actuator_state": self._actuator_state,
+                    "timestamp_perf": f"{t_start:.6f}",
+                    "note": "no packet before watchdog deadline",
+                })
             print(f"\n  *** WATCHDOG FAILSAFE *** "
                   f"No packet in {elapsed_since_last:.0f}ms — triggering emergency stop\n")
 
@@ -192,6 +268,8 @@ class NodeC:
         print(f"  Listening: {self.bind_ip}:{NODE_C_PORT}")
         print(f"  Debounce: {DEBOUNCE_COUNT} consecutive STOP within {DEBOUNCE_WINDOW_MS}ms")
         print(f"  Watchdog: failsafe after {WATCHDOG_TIMEOUT_MS}ms silence")
+        if self._results.enabled:
+            print(f"  Results: {self._results.run_dir}")
         print(f"  Press Ctrl+C to stop.\n")
 
         self._running.set()
@@ -211,16 +289,35 @@ class NodeC:
         for t in threads:
             t.start()
 
+        completed = False
+        deadline = time.perf_counter() + self.duration if self.duration is not None else None
         try:
             while True:
-                time.sleep(1)
+                now_perf = time.perf_counter()
+                now_wall = time.time()
+                if deadline is not None and now_perf >= deadline:
+                    completed = True
+                    break
+                if self.stop_at is not None and now_wall >= self.stop_at:
+                    completed = True
+                    break
+
+                sleep_time = 1.0
+                if deadline is not None:
+                    sleep_time = min(sleep_time, max(0.01, deadline - now_perf))
+                if self.stop_at is not None:
+                    sleep_time = min(sleep_time, max(0.01, self.stop_at - now_wall))
+                time.sleep(sleep_time)
         except KeyboardInterrupt:
             print("\nnodeC: Shutting down ...")
+        if completed:
+            print("\nnodeC: Duration complete; shutting down ...")
 
         self._running.clear()
         time.sleep(0.2)
         self.sock.close()
         self.print_summary()
+        self._results.close()
 
     def print_summary(self):
         print(f"\n{'='*60}")
@@ -247,6 +344,36 @@ class NodeC:
         print(f"  Overruns: {len(overruns)}")
         print(f"{'='*60}")
 
+        overruns_by_task = {}
+        for task_name, _elapsed_ms, _period_ms in overruns:
+            overruns_by_task[task_name] = overruns_by_task.get(task_name, 0) + 1
+
+        self._results.write_summary("nodeC_summary.json", {
+            "node": "nodeC",
+            "mode": "host_fallback",
+            "local": self.local,
+            "bind_ip": self.bind_ip,
+            "bind_port": NODE_C_PORT,
+            "debounce_count": DEBOUNCE_COUNT,
+            "debounce_window_ms": DEBOUNCE_WINDOW_MS,
+            "watchdog_timeout_ms": WATCHDOG_TIMEOUT_MS,
+            "stats": {
+                **self.stats,
+                "final_actuator_state": self._actuator_state,
+            },
+            "timing": {
+                "recv": timing_stats(self.timing["recv"]),
+                "validate": timing_stats(self.timing["validate"]),
+                "watchdog": timing_stats(self.timing["watchdog"]),
+            },
+            "overrun_count": len(overruns),
+            "overruns_by_task": overruns_by_task,
+            "overruns": [
+                {"task": name, "elapsed_ms": elapsed, "period_ms": period}
+                for name, elapsed, period in overruns
+            ],
+        })
+
 
 # ============================================================
 # MAIN
@@ -256,9 +383,25 @@ def main():
     parser = argparse.ArgumentParser(description="Node C — Actuator Control (Host Fallback)")
     parser.add_argument("--local", action="store_true",
                         help="Use 0.0.0.0 instead of simnet IP (all nodes on one host)")
+    parser.add_argument("--results-dir", default="results",
+                        help="Directory for generated results (default: results)")
+    parser.add_argument("--run-id", default=None,
+                        help="Run folder name shared across nodes")
+    parser.add_argument("--no-results", action="store_true",
+                        help="Disable generated CSV/JSON result files")
+    parser.add_argument("--duration", type=float, default=None,
+                        help="Run duration in seconds before clean shutdown")
+    parser.add_argument("--stop-at", type=float, default=None, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
-    node = NodeC(local=args.local)
+    node = NodeC(
+        local=args.local,
+        results_dir=args.results_dir,
+        run_id=args.run_id,
+        no_results=args.no_results,
+        duration=args.duration,
+        stop_at=args.stop_at,
+    )
     node.run()
 
 

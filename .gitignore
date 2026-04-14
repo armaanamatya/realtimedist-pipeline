@@ -10,6 +10,7 @@ __pycache__/
 *.py[cod]
 
 # Generated experiment artifacts
+results/
 artifacts/
 *.csv
 *.wav
