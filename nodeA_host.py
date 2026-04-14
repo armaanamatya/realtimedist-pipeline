@@ -20,6 +20,8 @@ import wave
 
 import numpy as np
 
+from results_logging import ResultsLogger, timing_stats
+
 # ============================================================
 # CONFIGURATION
 # ============================================================
@@ -128,10 +130,14 @@ class NoiseReader:
 # ============================================================
 
 class NodeA:
-    def __init__(self, wav_path=None, local=False, target_port_override=None):
+    def __init__(self, wav_path=None, local=False, target_port_override=None,
+                 results_dir="results", run_id=None, no_results=False,
+                 duration=None, stop_at=None):
         self.local = local
         self.target_ip = "127.0.0.1" if local else NODE_B_IP
         self.target_port = target_port_override or NODE_B_PORT
+        self.duration = duration
+        self.stop_at = stop_at
         self.ring = RingBuffer()
         self.chunk_ready = None
         self.chunk_lock = threading.Lock()
@@ -141,6 +147,25 @@ class NodeA:
         # Timing
         self.timing = {"sample": [], "extract": [], "transmit": [], "overruns": []}
         self.stats = {"samples_read": 0, "chunks_sent": 0}
+        self._results = ResultsLogger(
+            "nodeA", results_dir=results_dir, run_id=run_id, enabled=not no_results
+        )
+        self._timing_csv = self._results.csv_table(
+            "nodeA_timing.csv",
+            ["task", "elapsed_ms", "period_ms", "overrun", "timestamp_perf"],
+        )
+        self._packets_csv = self._results.csv_table(
+            "nodeA_packets.csv",
+            [
+                "seq_num",
+                "timestamp_us",
+                "bytes_sent",
+                "target_ip",
+                "target_port",
+                "send_ms",
+                "send_error",
+            ],
+        )
 
         # Audio source
         if wav_path:
@@ -158,7 +183,17 @@ class NodeA:
             if sleep_time > 0:
                 time.sleep(sleep_time)
             else:
-                self.timing["overruns"].append((name, elapsed * 1000, period * 1000))
+                elapsed_ms = elapsed * 1000
+                period_ms = period * 1000
+                self.timing["overruns"].append((name, elapsed_ms, period_ms))
+                if self._timing_csv:
+                    self._timing_csv.writerow({
+                        "task": name,
+                        "elapsed_ms": f"{elapsed_ms:.3f}",
+                        "period_ms": f"{period_ms:.3f}",
+                        "overrun": "true",
+                        "timestamp_perf": f"{time.perf_counter():.6f}",
+                    })
 
     # ---- Task 1: tAudioSample (10ms) ----
     def _audio_sample(self):
@@ -166,7 +201,16 @@ class NodeA:
         samples = self.reader.read(SAMPLES_PER_READ)
         self.ring.write(samples)
         self.stats["samples_read"] += SAMPLES_PER_READ
-        self.timing["sample"].append((time.perf_counter() - t_start) * 1000)
+        elapsed_ms = (time.perf_counter() - t_start) * 1000
+        self.timing["sample"].append(elapsed_ms)
+        if self._timing_csv:
+            self._timing_csv.writerow({
+                "task": "sample",
+                "elapsed_ms": f"{elapsed_ms:.3f}",
+                "period_ms": f"{AUDIO_SAMPLE_PERIOD * 1000:.3f}",
+                "overrun": "false",
+                "timestamp_perf": f"{time.perf_counter():.6f}",
+            })
 
     # ---- Task 2: tFeatureExtract (20ms) ----
     def _feature_extract(self):
@@ -175,7 +219,16 @@ class NodeA:
         if chunk is not None:
             with self.chunk_lock:
                 self.chunk_ready = chunk
-        self.timing["extract"].append((time.perf_counter() - t_start) * 1000)
+        elapsed_ms = (time.perf_counter() - t_start) * 1000
+        self.timing["extract"].append(elapsed_ms)
+        if self._timing_csv:
+            self._timing_csv.writerow({
+                "task": "extract",
+                "elapsed_ms": f"{elapsed_ms:.3f}",
+                "period_ms": f"{FEATURE_EXTRACT_PERIOD * 1000:.3f}",
+                "overrun": "false",
+                "timestamp_perf": f"{time.perf_counter():.6f}",
+            })
 
     # ---- Task 3: tUdpTransmit (20ms) ----
     def _udp_transmit(self):
@@ -193,12 +246,34 @@ class NodeA:
 
         try:
             self.sock.sendto(packet, (self.target_ip, self.target_port))
+            send_error = ""
         except OSError as e:
+            send_error = str(e)
             print(f"  nodeA: sendto failed: {e}")
 
+        send_ms = (time.perf_counter() - t_start) * 1000
+        sent_seq = self.seq_num
         self.seq_num += 1
         self.stats["chunks_sent"] += 1
-        self.timing["transmit"].append((time.perf_counter() - t_start) * 1000)
+        self.timing["transmit"].append(send_ms)
+        if self._timing_csv:
+            self._timing_csv.writerow({
+                "task": "transmit",
+                "elapsed_ms": f"{send_ms:.3f}",
+                "period_ms": f"{UDP_TRANSMIT_PERIOD * 1000:.3f}",
+                "overrun": "false",
+                "timestamp_perf": f"{time.perf_counter():.6f}",
+            })
+        if self._packets_csv:
+            self._packets_csv.writerow({
+                "seq_num": sent_seq,
+                "timestamp_us": ts_us,
+                "bytes_sent": len(packet) if not send_error else 0,
+                "target_ip": self.target_ip,
+                "target_port": self.target_port,
+                "send_ms": f"{send_ms:.3f}",
+                "send_error": send_error,
+            })
 
         if self.seq_num % 10 == 0:
             print(f"  nodeA: sent packet #{self.seq_num} | "
@@ -211,6 +286,8 @@ class NodeA:
         print(f"{'='*50}")
         print(f"  Target: {self.target_ip}:{self.target_port}")
         print(f"  Tasks: tAudioSample(10ms) tFeatureExtract(20ms) tUdpTransmit(20ms)")
+        if self._results.enabled:
+            print(f"  Results: {self._results.run_dir}")
         print(f"  Press Ctrl+C to stop.\n")
 
         self._running.set()
@@ -229,16 +306,35 @@ class NodeA:
         for t in threads:
             t.start()
 
+        completed = False
+        deadline = time.perf_counter() + self.duration if self.duration is not None else None
         try:
             while True:
-                time.sleep(1)
+                now_perf = time.perf_counter()
+                now_wall = time.time()
+                if deadline is not None and now_perf >= deadline:
+                    completed = True
+                    break
+                if self.stop_at is not None and now_wall >= self.stop_at:
+                    completed = True
+                    break
+
+                sleep_time = 1.0
+                if deadline is not None:
+                    sleep_time = min(sleep_time, max(0.01, deadline - now_perf))
+                if self.stop_at is not None:
+                    sleep_time = min(sleep_time, max(0.01, self.stop_at - now_wall))
+                time.sleep(sleep_time)
         except KeyboardInterrupt:
             print("\nnodeA: Shutting down ...")
+        if completed:
+            print("\nnodeA: Duration complete; shutting down ...")
 
         self._running.clear()
         time.sleep(0.2)
         self.sock.close()
         self.print_summary()
+        self._results.close()
 
     def print_summary(self):
         print(f"\n{'='*60}")
@@ -261,6 +357,25 @@ class NodeA:
         print(f"  Overruns: {len(overruns)}")
         print(f"{'='*60}")
 
+        self._results.write_summary("nodeA_summary.json", {
+            "node": "nodeA",
+            "mode": "host_fallback",
+            "target_ip": self.target_ip,
+            "target_port": self.target_port,
+            "local": self.local,
+            "stats": self.stats,
+            "timing": {
+                "sample": timing_stats(self.timing["sample"]),
+                "extract": timing_stats(self.timing["extract"]),
+                "transmit": timing_stats(self.timing["transmit"]),
+            },
+            "overrun_count": len(overruns),
+            "overruns": [
+                {"task": name, "elapsed_ms": elapsed, "period_ms": period}
+                for name, elapsed, period in overruns
+            ],
+        })
+
 
 # ============================================================
 # MAIN
@@ -274,10 +389,24 @@ def main():
                         help="Use 127.0.0.1 instead of simnet IPs (all nodes on one host)")
     parser.add_argument("--target-port", type=int, default=None,
                         help="Override target port (e.g. 6001 to send through proxy)")
+    parser.add_argument("--results-dir", default="results",
+                        help="Directory for generated results (default: results)")
+    parser.add_argument("--run-id", default=None,
+                        help="Run folder name shared across nodes")
+    parser.add_argument("--no-results", action="store_true",
+                        help="Disable generated CSV/JSON result files")
+    parser.add_argument("--duration", type=float, default=None,
+                        help="Run duration in seconds before clean shutdown")
+    parser.add_argument("--stop-at", type=float, default=None, help=argparse.SUPPRESS)
     args = parser.parse_args()
 
     node = NodeA(wav_path=args.wav, local=args.local,
-                 target_port_override=args.target_port)
+                 target_port_override=args.target_port,
+                 results_dir=args.results_dir,
+                 run_id=args.run_id,
+                 no_results=args.no_results,
+                 duration=args.duration,
+                 stop_at=args.stop_at)
     node.run()
 
 
