@@ -46,13 +46,16 @@ WATCHDOG_PERIOD = 0.100       # 100ms — tWatchdog
 class NodeC:
     def __init__(self, local=False, results_dir="results", run_id=None,
                  no_results=False, duration=None, stop_at=None,
-                 scheduler="rms", preemptive=False):
+                 scheduler="rms", preemptive=False, partitioned=False,
+                 watchdog_timeout_ms=None):
         self.local = local
-        self.bind_ip = "0.0.0.0" if local else NODE_C_IP
+        self.bind_ip = "0.0.0.0"
         self.duration = duration
         self.stop_at = stop_at
         self.scheduler_policy = scheduler
         self.preemptive = preemptive
+        self.partitioned = partitioned
+        self._watchdog_timeout_ms = watchdog_timeout_ms if watchdog_timeout_ms is not None else WATCHDOG_TIMEOUT_MS
         self._scheduler = None
         self._running = threading.Event()
 
@@ -222,7 +225,7 @@ class NodeC:
         t_start = time.perf_counter()
         elapsed_since_last = (t_start - self._last_packet_time) * 1000
 
-        if elapsed_since_last > WATCHDOG_TIMEOUT_MS and not self._watchdog_triggered:
+        if elapsed_since_last > self._watchdog_timeout_ms and not self._watchdog_triggered:
             self._watchdog_triggered = True
             self.stats["watchdog_failsafes"] += 1
             self._actuator_state = "FAILSAFE_STOP"
@@ -252,7 +255,7 @@ class NodeC:
         mode_str = "preemptive/OS threads" if self.preemptive else "cooperative"
         print(f"  Scheduler: {self.scheduler_policy.upper()} ({mode_str})")
         print(f"  Debounce: {DEBOUNCE_COUNT} consecutive STOP within {DEBOUNCE_WINDOW_MS}ms")
-        print(f"  Watchdog: failsafe after {WATCHDOG_TIMEOUT_MS}ms silence")
+        print(f"  Watchdog: failsafe after {self._watchdog_timeout_ms}ms silence")
         if self._results.enabled:
             print(f"  Results: {self._results.run_dir}")
         print(f"  Press Ctrl+C to stop.\n")
@@ -363,7 +366,7 @@ class NodeC:
             "bind_port": NODE_C_PORT,
             "debounce_count": DEBOUNCE_COUNT,
             "debounce_window_ms": DEBOUNCE_WINDOW_MS,
-            "watchdog_timeout_ms": WATCHDOG_TIMEOUT_MS,
+            "watchdog_timeout_ms": self._watchdog_timeout_ms,
             "stats": {
                 **self.stats,
                 "final_actuator_state": self._actuator_state,
@@ -407,6 +410,8 @@ def main():
     parser.add_argument("--partitioned", action="store_true",
                         help="Pin each task thread to a dedicated CPU core "
                              "(partitioned multiprocessor scheduling; requires --preemptive)")
+    parser.add_argument("--watchdog-timeout", type=int, default=None,
+                        help="Watchdog timeout in ms (default: 3000)")
     args = parser.parse_args()
 
     node = NodeC(
@@ -419,6 +424,7 @@ def main():
         scheduler=args.scheduler,
         preemptive=args.preemptive,
         partitioned=args.partitioned,
+        watchdog_timeout_ms=args.watchdog_timeout,
     )
     node.run()
 

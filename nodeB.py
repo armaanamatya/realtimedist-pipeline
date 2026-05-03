@@ -320,7 +320,7 @@ class NodeB:
         packet = struct.pack("<IQ", seq_num, origin_ts) + cmd_bytes + \
                  struct.pack("<f", confidence)
 
-        target_ip = "127.0.0.1" if self.local else NODE_C_IP
+        target_ip = "127.0.0.1"  # nodeC always runs on host
         send_error = ""
         try:
             self._send_sock.sendto(packet, (target_ip, self.target_port))
@@ -363,8 +363,8 @@ class NodeB:
     def run(self):
         """Start all threads and run until KeyboardInterrupt."""
         # Setup sockets
-        bind_ip = "0.0.0.0" if (self.test_mode or self.local) else NODE_B_IP
-        send_ip = "127.0.0.1" if self.local else NODE_C_IP
+        bind_ip = "0.0.0.0"  # listen on all interfaces; accepts both local and VxSim NAT traffic
+        send_ip = "127.0.0.1"  # nodeC always runs on host
         send_port = self.target_port
         self._recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._recv_sock.bind((bind_ip, NODE_B_PORT))
