@@ -1,0 +1,1216 @@
+
+==================================================
+  Node C — Actuator Control (Host Fallback)
+==================================================
+  Listening: 0.0.0.0:5002
+  Debounce: 2 consecutive STOP within 2000ms
+  Watchdog: failsafe after 3000ms silence
+  Results: finalresults\hybrid_fp16_baseline
+  Press Ctrl+C to stop.
+
+
+  *** WATCHDOG FAILSAFE *** No packet in 3054ms — triggering emergency stop
+
+  nodeC: recv #15756 cmd=STOP conf=0.382
+  nodeC: recv #15758 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15758 conf=0.384) (processing=30.7ms)
+
+  nodeC: recv #15760 cmd=STOP conf=0.377
+  nodeC: recv #15762 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15762 conf=0.377) (processing=0.1ms)
+
+  nodeC: recv #15764 cmd=STOP conf=0.384
+  nodeC: recv #15766 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15766 conf=0.382) (processing=0.1ms)
+
+  nodeC: recv #15768 cmd=STOP conf=0.382
+  nodeC: recv #15770 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15770 conf=0.384) (processing=0.2ms)
+
+
+  nodeC: recv #15772 cmd=STOP conf=0.382
+  nodeC: recv #15774 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15774 conf=0.386) (processing=31.3ms)
+
+  nodeC: recv #15776 cmd=STOP conf=0.371
+  nodeC: recv #15778 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15778 conf=0.377) (processing=31.5ms)
+
+  nodeC: recv #15781 cmd=STOP conf=0.377
+  nodeC: recv #15784 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15784 conf=0.386) (processing=31.2ms)
+
+  nodeC: recv #15786 cmd=STOP conf=0.371
+  nodeC: recv #15789 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15789 conf=0.386) (processing=30.4ms)
+
+  nodeC: recv #15791 cmd=STOP conf=0.382
+  nodeC: recv #15793 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15793 conf=0.384) (processing=30.1ms)
+
+  nodeC: recv #15796 cmd=STOP conf=0.384
+  nodeC: recv #15798 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15798 conf=0.384) (processing=0.2ms)
+
+  nodeC: recv #15801 cmd=STOP conf=0.377
+  nodeC: recv #15803 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15803 conf=0.386) (processing=0.2ms)
+
+  nodeC: recv #15805 cmd=STOP conf=0.386
+  nodeC: recv #15808 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15808 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #15811 cmd=STOP conf=0.384
+  nodeC: recv #15814 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15814 conf=0.386) (processing=31.6ms)
+
+  nodeC: recv #15816 cmd=STOP conf=0.382
+  nodeC: recv #15819 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15819 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #15821 cmd=STOP conf=0.384
+  nodeC: recv #15823 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15823 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #15825 cmd=STOP conf=0.382
+  nodeC: recv #15828 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15828 conf=0.382) (processing=30.6ms)
+
+  nodeC: recv #15832 cmd=STOP conf=0.377
+  nodeC: recv #15835 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15835 conf=0.377) (processing=31.3ms)
+
+  nodeC: recv #15837 cmd=STOP conf=0.386
+  nodeC: recv #15840 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15840 conf=0.386) (processing=31.7ms)
+
+  nodeC: recv #15843 cmd=STOP conf=0.386
+  nodeC: recv #15846 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15846 conf=0.384) (processing=30.1ms)
+
+  nodeC: recv #15849 cmd=STOP conf=0.382
+  nodeC: recv #15851 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15851 conf=0.371) (processing=0.1ms)
+
+
+  nodeC: recv #15853 cmd=STOP conf=0.386
+  nodeC: recv #15855 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15855 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #15858 cmd=STOP conf=0.384
+  nodeC: recv #15861 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15861 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #15863 cmd=STOP conf=0.386
+  nodeC: recv #15865 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15865 conf=0.371) (processing=0.1ms)
+
+
+  nodeC: recv #15867 cmd=STOP conf=0.382
+  nodeC: recv #15870 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15870 conf=0.384) (processing=31.4ms)
+
+  nodeC: recv #15873 cmd=STOP conf=0.386
+  nodeC: recv #15876 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15876 conf=0.386) (processing=0.1ms)
+
+  nodeC: recv #15878 cmd=STOP conf=0.386
+  nodeC: recv #15880 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15880 conf=0.382) (processing=31.3ms)
+
+  nodeC: recv #15884 cmd=STOP conf=0.382
+  nodeC: recv #15886 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15886 conf=0.386) (processing=31.4ms)
+
+  nodeC: recv #15888 cmd=STOP conf=0.377
+  nodeC: recv #15891 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15891 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #15894 cmd=STOP conf=0.384
+  nodeC: recv #15896 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15896 conf=0.384) (processing=30.3ms)
+
+  nodeC: recv #15898 cmd=STOP conf=0.371
+  nodeC: recv #15901 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15901 conf=0.386) (processing=30.8ms)
+
+  nodeC: recv #15903 cmd=STOP conf=0.377
+  nodeC: recv #15907 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15907 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #15909 cmd=STOP conf=0.382
+  nodeC: recv #15912 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15912 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #15915 cmd=STOP conf=0.371
+  nodeC: recv #15917 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15917 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #15920 cmd=STOP conf=0.384
+  nodeC: recv #15923 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15923 conf=0.371) (processing=31.6ms)
+
+  nodeC: recv #15926 cmd=STOP conf=0.382
+  nodeC: recv #15928 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15928 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #15931 cmd=STOP conf=0.382
+  nodeC: recv #15934 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15934 conf=0.386) (processing=31.1ms)
+
+  nodeC: recv #15937 cmd=STOP conf=0.382
+  nodeC: recv #15940 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15940 conf=0.386) (processing=31.6ms)
+
+  nodeC: recv #15942 cmd=STOP conf=0.386
+  nodeC: recv #15944 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15944 conf=0.371) (processing=0.1ms)
+
+  nodeC: recv #15947 cmd=STOP conf=0.382
+  nodeC: recv #15950 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15950 conf=0.384) (processing=0.2ms)
+
+
+  nodeC: recv #15952 cmd=STOP conf=0.386
+  nodeC: recv #15956 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15956 conf=0.386) (processing=0.2ms)
+
+  nodeC: recv #15958 cmd=STOP conf=0.377
+  nodeC: recv #15960 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15960 conf=0.386) (processing=31.2ms)
+
+  nodeC: recv #15963 cmd=STOP conf=0.382
+  nodeC: recv #15965 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15965 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #15968 cmd=STOP conf=0.382
+  nodeC: recv #15971 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15971 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #15974 cmd=STOP conf=0.382
+  nodeC: recv #15977 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15977 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #15980 cmd=STOP conf=0.382
+  nodeC: recv #15982 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15982 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #15985 cmd=STOP conf=0.377
+  nodeC: recv #15987 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15987 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #15990 cmd=STOP conf=0.382
+  nodeC: recv #15993 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15993 conf=0.382) (processing=31.8ms)
+
+  nodeC: recv #15995 cmd=STOP conf=0.382
+  nodeC: recv #15997 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15997 conf=0.386) (processing=30.6ms)
+
+  nodeC: recv #16000 cmd=STOP conf=0.386
+  nodeC: recv #16002 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16002 conf=0.386) (processing=30.6ms)
+
+  nodeC: recv #16005 cmd=STOP conf=0.386
+  nodeC: recv #16008 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16008 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16011 cmd=STOP conf=0.382
+  nodeC: recv #16014 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16014 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #16016 cmd=STOP conf=0.386
+  nodeC: recv #16019 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16019 conf=0.386) (processing=31.1ms)
+
+  nodeC: recv #16021 cmd=STOP conf=0.377
+  nodeC: recv #16024 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16024 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16026 cmd=STOP conf=0.386
+  nodeC: recv #16029 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16029 conf=0.371) (processing=30.7ms)
+
+  nodeC: recv #16032 cmd=STOP conf=0.384
+  nodeC: recv #16034 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16034 conf=0.386) (processing=31.1ms)
+
+  nodeC: recv #16037 cmd=STOP conf=0.386
+  nodeC: recv #16039 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16039 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16041 cmd=STOP conf=0.386
+  nodeC: recv #16043 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16043 conf=0.371) (processing=30.2ms)
+
+  nodeC: recv #16046 cmd=STOP conf=0.386
+  nodeC: recv #16048 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16048 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #16051 cmd=STOP conf=0.386
+  nodeC: recv #16053 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16053 conf=0.371) (processing=31.3ms)
+
+  nodeC: recv #16055 cmd=STOP conf=0.382
+  nodeC: recv #16057 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16057 conf=0.382) (processing=31.0ms)
+
+  nodeC: recv #16060 cmd=STOP conf=0.371
+  nodeC: recv #16063 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16063 conf=0.377) (processing=31.4ms)
+
+  nodeC: recv #16065 cmd=STOP conf=0.386
+  nodeC: recv #16067 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16067 conf=0.382) (processing=31.5ms)
+
+  nodeC: recv #16070 cmd=STOP conf=0.384
+  nodeC: recv #16073 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16073 conf=0.382) (processing=30.3ms)
+
+  nodeC: recv #16076 cmd=STOP conf=0.386
+  nodeC: recv #16081 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16081 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16083 cmd=STOP conf=0.382
+  nodeC: recv #16085 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16085 conf=0.382) (processing=30.1ms)
+
+  nodeC: recv #16087 cmd=STOP conf=0.386
+  nodeC: recv #16089 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16089 conf=0.382) (processing=32.3ms)
+
+  nodeC: recv #16091 cmd=STOP conf=0.384
+  nodeC: recv #16093 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16093 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16096 cmd=STOP conf=0.384
+  nodeC: recv #16098 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16098 conf=0.382) (processing=31.1ms)
+
+  nodeC: recv #16101 cmd=STOP conf=0.377
+  nodeC: recv #16103 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16103 conf=0.377) (processing=29.8ms)
+
+  nodeC: recv #16105 cmd=STOP conf=0.382
+  nodeC: recv #16107 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16107 conf=0.386) (processing=31.0ms)
+
+  nodeC: recv #16109 cmd=STOP conf=0.371
+  nodeC: recv #16113 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16113 conf=0.377) (processing=31.0ms)
+
+  nodeC: recv #16115 cmd=STOP conf=0.377
+  nodeC: recv #16117 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16117 conf=0.382) (processing=0.4ms)
+
+  nodeC: recv #16119 cmd=STOP conf=0.382
+  nodeC: recv #16121 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16121 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #16124 cmd=STOP conf=0.384
+  nodeC: recv #16126 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16126 conf=0.384) (processing=30.4ms)
+
+  nodeC: recv #16128 cmd=STOP conf=0.382
+  nodeC: recv #16131 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16131 conf=0.382) (processing=0.1ms)
+
+  nodeC: recv #16135 cmd=STOP conf=0.371
+  nodeC: recv #16137 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16137 conf=0.382) (processing=0.1ms)
+
+  nodeC: recv #16139 cmd=STOP conf=0.377
+  nodeC: recv #16142 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16142 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16144 cmd=STOP conf=0.377
+  nodeC: recv #16147 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16147 conf=0.382) (processing=31.8ms)
+
+  nodeC: recv #16149 cmd=STOP conf=0.382
+  nodeC: recv #16152 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16152 conf=0.386) (processing=0.2ms)
+
+  nodeC: recv #16155 cmd=STOP conf=0.377
+  nodeC: recv #16158 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16158 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16161 cmd=STOP conf=0.386
+  nodeC: recv #16164 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16164 conf=0.382) (processing=0.3ms)
+
+  nodeC: recv #16166 cmd=STOP conf=0.386
+  nodeC: recv #16169 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16169 conf=0.386) (processing=30.2ms)
+
+  nodeC: recv #16172 cmd=STOP conf=0.377
+  nodeC: recv #16174 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16174 conf=0.377) (processing=0.2ms)
+
+  nodeC: recv #16176 cmd=STOP conf=0.386
+  nodeC: recv #16179 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16179 conf=0.371) (processing=30.2ms)
+
+  nodeC: recv #16181 cmd=STOP conf=0.386
+  nodeC: recv #16184 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16184 conf=0.382) (processing=31.7ms)
+
+  nodeC: recv #16187 cmd=STOP conf=0.377
+  nodeC: recv #16189 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16189 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16192 cmd=STOP conf=0.382
+  nodeC: recv #16195 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16195 conf=0.384) (processing=30.6ms)
+
+  nodeC: recv #16198 cmd=STOP conf=0.386
+  nodeC: recv #16200 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16200 conf=0.384) (processing=0.2ms)
+
+
+  nodeC: recv #16202 cmd=STOP conf=0.382
+  nodeC: recv #16204 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16204 conf=0.371) (processing=32.4ms)
+
+  nodeC: recv #16207 cmd=STOP conf=0.382
+  nodeC: recv #16210 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16210 conf=0.382) (processing=31.0ms)
+
+  nodeC: recv #16213 cmd=STOP conf=0.386
+  nodeC: recv #16215 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16215 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #16218 cmd=STOP conf=0.382
+  nodeC: recv #16221 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16221 conf=0.371) (processing=31.1ms)
+
+  nodeC: recv #16224 cmd=STOP conf=0.382
+  nodeC: recv #16226 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16226 conf=0.382) (processing=0.4ms)
+
+
+  nodeC: recv #16229 cmd=STOP conf=0.382
+  nodeC: recv #16231 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16231 conf=0.382) (processing=31.1ms)
+
+  nodeC: recv #16234 cmd=STOP conf=0.386
+  nodeC: recv #16236 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16236 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #16238 cmd=STOP conf=0.386
+  nodeC: recv #16240 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16240 conf=0.386) (processing=31.8ms)
+
+  nodeC: recv #16242 cmd=STOP conf=0.371
+  nodeC: recv #16244 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16244 conf=0.384) (processing=32.0ms)
+
+  nodeC: recv #16246 cmd=STOP conf=0.377
+  nodeC: recv #16250 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16250 conf=0.384) (processing=30.2ms)
+
+  nodeC: recv #16252 cmd=STOP conf=0.382
+  nodeC: recv #16255 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16255 conf=0.386) (processing=30.7ms)
+
+  nodeC: recv #16258 cmd=STOP conf=0.382
+  nodeC: recv #16260 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16260 conf=0.371) (processing=31.3ms)
+
+  nodeC: recv #16262 cmd=STOP conf=0.384
+  nodeC: recv #16265 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16265 conf=0.382) (processing=31.5ms)
+
+  nodeC: recv #16268 cmd=STOP conf=0.382
+  nodeC: recv #16271 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16271 conf=0.371) (processing=0.5ms)
+
+  nodeC: recv #16274 cmd=STOP conf=0.377
+  nodeC: recv #16276 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16276 conf=0.386) (processing=31.7ms)
+
+  nodeC: recv #16278 cmd=STOP conf=0.382
+  nodeC: recv #16281 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16281 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #16283 cmd=STOP conf=0.386
+  nodeC: recv #16285 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16285 conf=0.384) (processing=30.8ms)
+
+  nodeC: recv #16287 cmd=STOP conf=0.386
+  nodeC: recv #16289 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16289 conf=0.386) (processing=32.3ms)
+
+  nodeC: recv #16291 cmd=STOP conf=0.384
+  nodeC: recv #16293 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16293 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16296 cmd=STOP conf=0.386
+  nodeC: recv #16298 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16298 conf=0.382) (processing=0.2ms)
+
+  nodeC: recv #16300 cmd=STOP conf=0.384
+  nodeC: recv #16302 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16302 conf=0.371) (processing=30.7ms)
+
+  nodeC: recv #16305 cmd=STOP conf=0.386
+  nodeC: recv #16307 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16307 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #16309 cmd=STOP conf=0.377
+  nodeC: recv #16311 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16311 conf=0.377) (processing=31.0ms)
+
+  nodeC: recv #16313 cmd=STOP conf=0.371
+  nodeC: recv #16316 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16316 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #16319 cmd=STOP conf=0.386
+  nodeC: recv #16321 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16321 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16324 cmd=STOP conf=0.386
+  nodeC: recv #16326 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16326 conf=0.377) (processing=31.6ms)
+  nodeC: recv #16329 cmd=STOP conf=0.382
+
+  nodeC: recv #16332 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16332 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16334 cmd=STOP conf=0.384
+  nodeC: recv #16336 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16336 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16339 cmd=STOP conf=0.377
+  nodeC: recv #16341 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16341 conf=0.384) (processing=0.2ms)
+
+
+  nodeC: recv #16343 cmd=STOP conf=0.382
+  nodeC: recv #16345 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16345 conf=0.371) (processing=0.1ms)
+
+  nodeC: recv #16348 cmd=STOP conf=0.386
+  nodeC: recv #16351 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16351 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #16353 cmd=STOP conf=0.382
+  nodeC: recv #16355 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16355 conf=0.386) (processing=32.3ms)
+
+  nodeC: recv #16358 cmd=STOP conf=0.382
+  nodeC: recv #16360 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16360 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16363 cmd=STOP conf=0.384
+  nodeC: recv #16366 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16366 conf=0.386) (processing=30.9ms)
+
+  nodeC: recv #16368 cmd=STOP conf=0.382
+  nodeC: recv #16370 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16370 conf=0.382) (processing=30.1ms)
+
+  nodeC: recv #16372 cmd=STOP conf=0.371
+  nodeC: recv #16375 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16375 conf=0.371) (processing=30.6ms)
+
+  nodeC: recv #16378 cmd=STOP conf=0.386
+  nodeC: recv #16381 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16381 conf=0.384) (processing=30.1ms)
+
+  nodeC: recv #16383 cmd=STOP conf=0.382
+  nodeC: recv #16385 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16385 conf=0.382) (processing=0.2ms)
+
+
+  nodeC: recv #16388 cmd=STOP conf=0.371
+  nodeC: recv #16393 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16393 conf=0.384) (processing=30.7ms)
+
+  nodeC: recv #16396 cmd=STOP conf=0.382
+  nodeC: recv #16399 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16399 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16401 cmd=STOP conf=0.386
+  nodeC: recv #16403 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16403 conf=0.371) (processing=31.8ms)
+
+  nodeC: recv #16405 cmd=STOP conf=0.382
+  nodeC: recv #16407 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16407 conf=0.386) (processing=31.3ms)
+
+  nodeC: recv #16409 cmd=STOP conf=0.384
+  nodeC: recv #16412 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16412 conf=0.384) (processing=0.3ms)
+
+
+  nodeC: recv #16415 cmd=STOP conf=0.386
+  nodeC: recv #16418 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16418 conf=0.386) (processing=0.2ms)
+
+  nodeC: recv #16421 cmd=STOP conf=0.382
+  nodeC: recv #16423 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16423 conf=0.382) (processing=30.9ms)
+
+  nodeC: recv #16426 cmd=STOP conf=0.377
+  nodeC: recv #16428 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16428 conf=0.386) (processing=31.2ms)
+
+  nodeC: recv #16431 cmd=STOP conf=0.386
+  nodeC: recv #16435 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16435 conf=0.377) (processing=0.2ms)
+
+  nodeC: recv #16438 cmd=STOP conf=0.382
+  nodeC: recv #16440 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16440 conf=0.386) (processing=30.9ms)
+
+  nodeC: recv #16443 cmd=STOP conf=0.386
+  nodeC: recv #16445 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16445 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16447 cmd=STOP conf=0.384
+  nodeC: recv #16449 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16449 conf=0.371) (processing=31.3ms)
+
+  nodeC: recv #16452 cmd=STOP conf=0.377
+  nodeC: recv #16454 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16454 conf=0.382) (processing=0.2ms)
+
+  nodeC: recv #16456 cmd=STOP conf=0.386
+  nodeC: recv #16459 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16459 conf=0.371) (processing=30.9ms)
+
+  nodeC: recv #16462 cmd=STOP conf=0.386
+  nodeC: recv #16464 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16464 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #16466 cmd=STOP conf=0.371
+  nodeC: recv #16468 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16468 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #16471 cmd=STOP conf=0.377
+  nodeC: recv #16473 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16473 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16475 cmd=STOP conf=0.382
+  nodeC: recv #16477 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16477 conf=0.386) (processing=31.0ms)
+
+  nodeC: recv #16480 cmd=STOP conf=0.371
+  nodeC: recv #16482 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16482 conf=0.382) (processing=30.6ms)
+
+  nodeC: recv #16485 cmd=STOP conf=0.386
+  nodeC: recv #16488 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16488 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16491 cmd=STOP conf=0.371
+  nodeC: recv #16493 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16493 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16495 cmd=STOP conf=0.384
+  nodeC: recv #16497 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16497 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16500 cmd=STOP conf=0.386
+  nodeC: recv #16502 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16502 conf=0.377) (processing=31.7ms)
+
+  nodeC: recv #16506 cmd=STOP conf=0.371
+  nodeC: recv #16509 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16509 conf=0.386) (processing=31.8ms)
+
+  nodeC: recv #16511 cmd=STOP conf=0.382
+  nodeC: recv #16513 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16513 conf=0.384) (processing=31.2ms)
+
+  nodeC: recv #16515 cmd=STOP conf=0.386
+  nodeC: recv #16518 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16518 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16520 cmd=STOP conf=0.371
+  nodeC: recv #16522 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16522 conf=0.386) (processing=0.1ms)
+
+  nodeC: recv #16525 cmd=STOP conf=0.371
+  nodeC: recv #16527 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16527 conf=0.386) (processing=29.3ms)
+
+  nodeC: recv #16529 cmd=STOP conf=0.386
+  nodeC: recv #16531 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16531 conf=0.386) (processing=30.3ms)
+
+  nodeC: recv #16533 cmd=STOP conf=0.382
+  nodeC: recv #16536 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16536 conf=0.371) (processing=31.1ms)
+
+  nodeC: recv #16538 cmd=STOP conf=0.382
+  nodeC: recv #16541 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16541 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16543 cmd=STOP conf=0.371
+  nodeC: recv #16546 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16546 conf=0.371) (processing=31.4ms)
+
+  nodeC: recv #16549 cmd=STOP conf=0.382
+  nodeC: recv #16552 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16552 conf=0.371) (processing=31.4ms)
+
+  nodeC: recv #16554 cmd=STOP conf=0.386
+  nodeC: recv #16557 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16557 conf=0.384) (processing=31.7ms)
+
+  nodeC: recv #16559 cmd=STOP conf=0.384
+  nodeC: recv #16561 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16561 conf=0.386) (processing=31.4ms)
+
+  nodeC: recv #16564 cmd=STOP conf=0.386
+  nodeC: recv #16566 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16566 conf=0.377) (processing=30.4ms)
+
+  nodeC: recv #16569 cmd=STOP conf=0.371
+  nodeC: recv #16572 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16572 conf=0.386) (processing=30.8ms)
+
+  nodeC: recv #16575 cmd=STOP conf=0.371
+  nodeC: recv #16577 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16577 conf=0.377) (processing=31.0ms)
+
+  nodeC: recv #16580 cmd=STOP conf=0.377
+  nodeC: recv #16582 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16582 conf=0.386) (processing=30.6ms)
+
+  nodeC: recv #16585 cmd=STOP conf=0.382
+  nodeC: recv #16588 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16588 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16590 cmd=STOP conf=0.382
+  nodeC: recv #16593 cmd=STOP conf=0.384
+  nodeC: recv #16595 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16593 conf=0.384) (processing=31.2ms)
+
+
+  nodeC: recv #16597 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16597 conf=0.384) (processing=30.7ms)
+
+  nodeC: recv #16599 cmd=STOP conf=0.382
+  nodeC: recv #16602 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16602 conf=0.386) (processing=31.1ms)
+
+  nodeC: recv #16605 cmd=STOP conf=0.386
+  nodeC: recv #16608 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16608 conf=0.382) (processing=31.4ms)
+
+  nodeC: recv #16611 cmd=STOP conf=0.386
+  nodeC: recv #16614 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16614 conf=0.377) (processing=31.4ms)
+
+  nodeC: recv #16616 cmd=STOP conf=0.371
+  nodeC: recv #16619 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16619 conf=0.386) (processing=30.6ms)
+
+  nodeC: recv #16621 cmd=STOP conf=0.377
+  nodeC: recv #16623 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16623 conf=0.386) (processing=31.0ms)
+
+  nodeC: recv #16626 cmd=STOP conf=0.386
+  nodeC: recv #16628 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16628 conf=0.377) (processing=30.4ms)
+
+  nodeC: recv #16630 cmd=STOP conf=0.386
+  nodeC: recv #16633 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16633 conf=0.386) (processing=30.9ms)
+
+  nodeC: recv #16636 cmd=STOP conf=0.377
+  nodeC: recv #16638 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16638 conf=0.377) (processing=0.1ms)
+
+
+  nodeC: recv #16640 cmd=STOP conf=0.386
+  nodeC: recv #16642 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16642 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16644 cmd=STOP conf=0.384
+  nodeC: recv #16647 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16647 conf=0.384) (processing=30.6ms)
+
+  nodeC: recv #16650 cmd=STOP conf=0.382
+  nodeC: recv #16652 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16652 conf=0.382) (processing=0.2ms)
+
+  nodeC: recv #16654 cmd=STOP conf=0.386
+  nodeC: recv #16656 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16656 conf=0.384) (processing=30.7ms)
+
+  nodeC: recv #16658 cmd=STOP conf=0.386
+  nodeC: recv #16662 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16662 conf=0.371) (processing=0.2ms)
+
+
+  nodeC: recv #16665 cmd=STOP conf=0.377
+  nodeC: recv #16668 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16668 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16670 cmd=STOP conf=0.384
+  nodeC: recv #16673 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16673 conf=0.386) (processing=0.2ms)
+
+
+  nodeC: recv #16676 cmd=STOP conf=0.386
+  nodeC: recv #16678 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16678 conf=0.382) (processing=30.9ms)
+
+  nodeC: recv #16681 cmd=STOP conf=0.384
+  nodeC: recv #16683 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16683 conf=0.382) (processing=30.9ms)
+
+  nodeC: recv #16686 cmd=STOP conf=0.371
+  nodeC: recv #16688 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16688 conf=0.371) (processing=30.9ms)
+
+  nodeC: recv #16692 cmd=STOP conf=0.386
+  nodeC: recv #16695 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16695 conf=0.386) (processing=31.7ms)
+
+  nodeC: recv #16698 cmd=STOP conf=0.386
+  nodeC: recv #16701 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16701 conf=0.371) (processing=31.0ms)
+
+  nodeC: recv #16703 cmd=STOP conf=0.382
+  nodeC: recv #16705 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16705 conf=0.382) (processing=31.4ms)
+
+  nodeC: recv #16708 cmd=STOP conf=0.386
+  nodeC: recv #16710 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16710 conf=0.386) (processing=30.8ms)
+
+  nodeC: recv #16714 cmd=STOP conf=0.386
+  nodeC: recv #16717 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16717 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16719 cmd=STOP conf=0.386
+  nodeC: recv #16722 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16722 conf=0.384) (processing=31.0ms)
+
+  nodeC: recv #16724 cmd=STOP conf=0.377
+  nodeC: recv #16726 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16726 conf=0.382) (processing=30.9ms)
+
+  nodeC: recv #16729 cmd=STOP conf=0.371
+  nodeC: recv #16732 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16732 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16736 cmd=STOP conf=0.371
+  nodeC: recv #16738 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16738 conf=0.377) (processing=30.6ms)
+
+  nodeC: recv #16741 cmd=STOP conf=0.371
+  nodeC: recv #16743 cmd=STOP conf=0.382
+  nodeC: recv #16745 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16743 conf=0.382) (processing=31.4ms)
+
+
+  nodeC: recv #16747 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16747 conf=0.382) (processing=30.2ms)
+
+  nodeC: recv #16750 cmd=STOP conf=0.386
+  nodeC: recv #16753 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16753 conf=0.371) (processing=0.1ms)
+
+
+  nodeC: recv #16755 cmd=STOP conf=0.386
+  nodeC: recv #16758 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16758 conf=0.382) (processing=30.3ms)
+
+  nodeC: recv #16760 cmd=STOP conf=0.386
+  nodeC: recv #16763 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16763 conf=0.382) (processing=30.5ms)
+
+  nodeC: recv #16766 cmd=STOP conf=0.371
+  nodeC: recv #16769 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16769 conf=0.382) (processing=30.1ms)
+
+  nodeC: recv #16772 cmd=STOP conf=0.384
+  nodeC: recv #16775 cmd=STOP conf=0.382
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16775 conf=0.382) (processing=0.1ms)
+
+
+  nodeC: recv #16777 cmd=STOP conf=0.382
+  nodeC: recv #16780 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16780 conf=0.384) (processing=30.9ms)
+
+  nodeC: recv #16782 cmd=STOP conf=0.386
+  nodeC: recv #16785 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16785 conf=0.371) (processing=31.6ms)
+
+  nodeC: recv #16788 cmd=STOP conf=0.382
+  nodeC: recv #16791 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16791 conf=0.386) (processing=30.4ms)
+
+  nodeC: recv #16793 cmd=STOP conf=0.371
+  nodeC: recv #16796 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16796 conf=0.371) (processing=31.7ms)
+
+  nodeC: recv #16799 cmd=STOP conf=0.386
+  nodeC: recv #16801 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16801 conf=0.371) (processing=0.2ms)
+
+  nodeC: recv #16804 cmd=STOP conf=0.386
+  nodeC: recv #16806 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16806 conf=0.386) (processing=30.0ms)
+
+  nodeC: recv #16809 cmd=STOP conf=0.386
+  nodeC: recv #16812 cmd=STOP conf=0.371
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16812 conf=0.371) (processing=0.1ms)
+
+
+  nodeC: recv #16814 cmd=STOP conf=0.384
+  nodeC: recv #16816 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16816 conf=0.384) (processing=0.3ms)
+
+  nodeC: recv #16818 cmd=STOP conf=0.382
+  nodeC: recv #16821 cmd=STOP conf=0.377
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16821 conf=0.377) (processing=0.2ms)
+
+
+  nodeC: recv #16823 cmd=STOP conf=0.386
+  nodeC: recv #16826 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16826 conf=0.382) (processing=0.1ms)
+
+  nodeC: recv #16828 cmd=STOP conf=0.377
+  nodeC: recv #16830 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16830 conf=0.382) (processing=31.0ms)
+
+  nodeC: recv #16832 cmd=STOP conf=0.371
+  nodeC: recv #16835 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16835 conf=0.382) (processing=31.2ms)
+
+  nodeC: recv #16837 cmd=STOP conf=0.386
+  nodeC: recv #16840 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16840 conf=0.382) (processing=30.2ms)
+
+  nodeC: recv #16842 cmd=STOP conf=0.382
+  nodeC: recv #16846 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16846 conf=0.386) (processing=30.9ms)
+
+  nodeC: recv #16849 cmd=STOP conf=0.384
+  nodeC: recv #16851 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16851 conf=0.386) (processing=30.1ms)
+
+  nodeC: recv #16854 cmd=STOP conf=0.386
+  nodeC: recv #16856 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16856 conf=0.384) (processing=0.1ms)
+
+
+  nodeC: recv #16859 cmd=STOP conf=0.384
+  nodeC: recv #16862 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16862 conf=0.371) (processing=31.8ms)
+
+  nodeC: recv #16864 cmd=STOP conf=0.377
+  nodeC: recv #16866 cmd=STOP conf=0.386
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16866 conf=0.386) (processing=0.1ms)
+
+
+  nodeC: recv #16868 cmd=STOP conf=0.384
+  nodeC: recv #16871 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16871 conf=0.384) (processing=0.2ms)
+
+  nodeC: recv #16874 cmd=STOP conf=0.386
+  nodeC: recv #16877 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16877 conf=0.384) (processing=0.1ms)
+
+  nodeC: recv #16879 cmd=STOP conf=0.382
+  nodeC: recv #16882 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16882 conf=0.382) (processing=30.0ms)
+
+  nodeC: recv #16885 cmd=STOP conf=0.382
+  nodeC: recv #16888 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16888 conf=0.382) (processing=31.6ms)
+
+  nodeC: recv #16890 cmd=STOP conf=0.377
+  nodeC: recv #16893 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16893 conf=0.386) (processing=0.1ms)
+
+  nodeC: recv #16897 cmd=STOP conf=0.382
+  nodeC: recv #16899 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16899 conf=0.377) (processing=30.5ms)
+
+  nodeC: recv #16901 cmd=STOP conf=0.386
+  nodeC: recv #16903 cmd=STOP conf=0.384
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16903 conf=0.384) (processing=0.2ms)
+
+
+  nodeC: recv #16906 cmd=STOP conf=0.377
+  nodeC: recv #16908 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16908 conf=0.384) (processing=31.3ms)
+
+  nodeC: recv #16911 cmd=STOP conf=0.377
+  nodeC: recv #16914 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16914 conf=0.377) (processing=31.0ms)
+
+  nodeC: recv #16916 cmd=STOP conf=0.386
+  nodeC: recv #16918 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16918 conf=0.371) (processing=0.1ms)
+
+  nodeC: recv #16922 cmd=STOP conf=0.371
+  nodeC: recv #16924 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16924 conf=0.382) (processing=32.5ms)
+
+  nodeC: recv #16926 cmd=STOP conf=0.382
+  nodeC: recv #16928 cmd=STOP conf=0.371
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16928 conf=0.371) (processing=30.9ms)
+
+  nodeC: recv #16931 cmd=STOP conf=0.386
+  nodeC: recv #16933 cmd=STOP conf=0.377
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16933 conf=0.377) (processing=32.7ms)
+
+  nodeC: recv #16936 cmd=STOP conf=0.384
+  nodeC: recv #16939 cmd=STOP conf=0.384
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16939 conf=0.384) (processing=30.3ms)
+
+  nodeC: recv #16941 cmd=STOP conf=0.377
+  nodeC: recv #16944 cmd=STOP conf=0.382
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16944 conf=0.382) (processing=30.7ms)
+
+  nodeC: recv #16947 cmd=STOP conf=0.386
+  nodeC: recv #16949 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16949 conf=0.386) (processing=30.2ms)
+
+  nodeC: recv #16951 cmd=STOP conf=0.371
+  nodeC: recv #16953 cmd=STOP conf=0.386
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=16953 conf=0.386) (processing=0.2ms)
+
+  nodeC: recv #16955 cmd=STOP conf=0.386
+
+nodeC: Duration complete; shutting down ...
+
+============================================================
+  Node C Summary (Host Fallback)
+============================================================
+  Packets received:     475
+  STOP commands:        475
+  GO commands:          0
+  Actuator triggers:    237
+  Watchdog failsafes:   1
+  Final actuator state: EMERGENCY_STOP
+  recv          min=0.01ms  avg=0.02ms  max=0.17ms  p99=0.05ms  n=475
+  validate      min=0.00ms  avg=0.17ms  max=3.29ms  p99=1.22ms  n=1129
+  watchdog      min=0.00ms  avg=0.02ms  max=5.36ms  p99=0.05ms  n=323
+  Overruns: 1
+============================================================

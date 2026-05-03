@@ -1,0 +1,75 @@
+{
+  "node": "nodeB",
+  "precision": "fp32",
+  "confidence_threshold": 0.3,
+  "local": true,
+  "test_mode": false,
+  "target_port": 5002,
+  "stats": {
+    "packets_recv": 968,
+    "inferences_run": 484,
+    "commands_sent": 480,
+    "commands_forwarded": 480
+  },
+  "timing": {
+    "recv": {
+      "count": 968,
+      "min_ms": 0.04610000178217888,
+      "avg_ms": 0.12112510328673928,
+      "max_ms": 0.5779999992228113,
+      "p99_ms": 0.43152699960046453
+    },
+    "inference": {
+      "count": 484,
+      "min_ms": 6.324800000584219,
+      "avg_ms": 7.979074379972573,
+      "max_ms": 14.447400004428346,
+      "p99_ms": 12.228209000386439
+    },
+    "send": {
+      "count": 480,
+      "min_ms": 0.050499998906161636,
+      "avg_ms": 0.11211208334316325,
+      "max_ms": 0.5268000022624619,
+      "p99_ms": 0.2948309951898409
+    },
+    "e2e": {
+      "count": 480,
+      "min_ms": 6.511999999929685,
+      "avg_ms": 8.090605416464314,
+      "max_ms": 14.62050000554882,
+      "p99_ms": 12.50484899843283
+    }
+  },
+  "overrun_count": 5,
+  "overruns_by_task": {
+    "send": 5
+  },
+  "overruns": [
+    {
+      "task": "send",
+      "elapsed_ms": 30.707199999596924,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 30.47610000066925,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 30.692300002556294,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 31.328899996879045,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 30.225599999539554,
+      "period_ms": 20.0
+    }
+  ]
+}

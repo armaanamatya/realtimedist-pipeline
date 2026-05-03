@@ -25,6 +25,7 @@ from queue import Queue, Empty
 import numpy as np
 
 from results_logging import ResultsLogger, timing_stats
+from scheduler import CooperativeScheduler, ScheduledTask, WindowsThreadScheduler
 
 # ============================================================
 # CONFIGURATION
@@ -99,7 +100,9 @@ class NodeB:
     def __init__(self, precision="fp32", test_mode=False, test_wav=None,
                  log_file=None, local=False, target_port_override=None,
                  confidence_threshold=CONFIDENCE_THRESHOLD, results_dir="results",
-                 run_id=None, no_results=False, duration=None, stop_at=None):
+                 run_id=None, no_results=False, duration=None, stop_at=None,
+                 scheduler="rms", preemptive=False, partitioned=False,
+                 infer_period=None):
         self.precision = precision
         self.test_mode = test_mode
         self.test_wav = test_wav
@@ -109,6 +112,11 @@ class NodeB:
         self.confidence_threshold = confidence_threshold
         self.duration = duration
         self.stop_at = stop_at
+        self.scheduler_policy = scheduler
+        self.preemptive = preemptive
+        self.partitioned = partitioned
+        self.infer_period = infer_period or INFER_PERIOD
+        self._scheduler = None
 
         self.audio_buffer = AudioBuffer()
         self.result_queue = Queue()
@@ -229,20 +237,6 @@ class NodeB:
         label = self.model.config.id2label[top_idx.item()]
         confidence = top_prob.item()
         return label, confidence
-
-    # ---- Periodic task helper ----
-
-    def _periodic_loop(self, name, func, period):
-        """Run func() every `period` seconds, logging overruns."""
-        while self._running.is_set():
-            t_start = time.perf_counter()
-            func()
-            elapsed = time.perf_counter() - t_start
-            sleep_time = period - elapsed
-            if sleep_time > 0:
-                time.sleep(sleep_time)
-            else:
-                self.timing["overruns"].append((name, elapsed * 1000, period * 1000))
 
     # ---- Task 1: recv_features (20ms) ----
 
@@ -374,12 +368,13 @@ class NodeB:
         send_port = self.target_port
         self._recv_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self._recv_sock.bind((bind_ip, NODE_B_PORT))
-        self._recv_sock.settimeout(0.1)
+        self._recv_sock.settimeout(0.005)  # 5ms — keeps cooperative scheduler responsive
 
         self._send_sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
 
         print(f"nodeB: Listening on {bind_ip}:{NODE_B_PORT}")
         print(f"nodeB: Sending to {send_ip}:{send_port}")
+        print(f"nodeB: Scheduler policy = {self.scheduler_policy.upper()}")
         if self._results.enabled:
             print(f"nodeB: Results -> {self._results.run_dir}")
 
@@ -405,22 +400,28 @@ class NodeB:
 
         self._running.set()
 
-        threads = [
-            threading.Thread(target=self._periodic_loop,
-                             args=("recv", self._recv_features, RECV_PERIOD),
-                             daemon=True),
-            threading.Thread(target=self._periodic_loop,
-                             args=("inference", self._kws_inference, INFER_PERIOD),
-                             daemon=True),
-            threading.Thread(target=self._periodic_loop,
-                             args=("send", self._send_result, SEND_PERIOD),
-                             daemon=True),
+        # WCET estimates for LLF laxity: conservative measured maxima (seconds)
+        sched_tasks = [
+            ScheduledTask("recv",      RECV_PERIOD,        0.002, self._recv_features, priority=1),
+            ScheduledTask("inference", self.infer_period,  0.025, self._kws_inference, priority=2),
+            ScheduledTask("send",      SEND_PERIOD,        0.002, self._send_result,   priority=3),
         ]
+        if self.preemptive:
+            self._scheduler = WindowsThreadScheduler(
+                sched_tasks, policy=self.scheduler_policy,
+                partitioned=self.partitioned,
+            )
+            mode_label = (f"{self.scheduler_policy.upper()} "
+                          f"({'partitioned' if self.partitioned else 'preemptive/global'})")
+        else:
+            self._scheduler = CooperativeScheduler(sched_tasks, policy=self.scheduler_policy)
+            mode_label = f"{self.scheduler_policy.upper()} (cooperative)"
+        sched_thread = threading.Thread(
+            target=self._scheduler.run, args=(self._running,), daemon=True
+        )
+        sched_thread.start()
 
-        for t in threads:
-            t.start()
-
-        print("nodeB: All tasks running. Press Ctrl+C to stop.\n")
+        print(f"nodeB: All tasks running — {mode_label}. Press Ctrl+C to stop.\n")
 
         completed = False
         deadline = time.perf_counter() + self.duration if self.duration is not None else None
@@ -456,13 +457,19 @@ class NodeB:
         if self._csv_file:
             self._csv_file.close()
 
+        # Collect overruns recorded by the cooperative scheduler
+        if self._scheduler is not None:
+            self.timing["overruns"].extend(self._scheduler.all_overruns())
+
         self.print_summary()
         self._results.close()
 
     def print_summary(self):
         """Print timing statistics."""
+        mode_str = "preemptive" if self.preemptive else "cooperative"
         print("\n" + "=" * 60)
-        print(f"  Node B Summary — Precision: {self.precision.upper()}")
+        print(f"  Node B Summary — Precision: {self.precision.upper()} | "
+              f"Scheduler: {self.scheduler_policy.upper()} ({mode_str})")
         print("=" * 60)
         print(f"  Packets received:    {self.stats['packets_recv']}")
         print(f"  Inferences run:      {self.stats['inferences_run']}")
@@ -497,6 +504,10 @@ class NodeB:
         self._results.write_summary("nodeB_summary.json", {
             "node": "nodeB",
             "precision": self.precision,
+            "scheduler_policy": self.scheduler_policy,
+            "scheduler_preemptive": self.preemptive,
+            "scheduler_partitioned": self.partitioned,
+            "infer_period_ms": self.infer_period * 1000,
             "confidence_threshold": self.confidence_threshold,
             "local": self.local,
             "test_mode": self.test_mode,
@@ -645,6 +656,17 @@ def main():
     parser.add_argument("--duration", type=float, default=None,
                         help="Run duration in seconds before clean shutdown")
     parser.add_argument("--stop-at", type=float, default=None, help=argparse.SUPPRESS)
+    parser.add_argument("--scheduler", choices=["rms", "edf", "llf"], default="rms",
+                        help="Scheduling policy: rms (default), edf, or llf")
+    parser.add_argument("--preemptive", action="store_true",
+                        help="Use Windows OS thread priorities for real preemption "
+                             "(Windows only; cooperative mode used otherwise)")
+    parser.add_argument("--partitioned", action="store_true",
+                        help="Pin each task thread to a dedicated CPU core "
+                             "(partitioned multiprocessor scheduling; requires --preemptive)")
+    parser.add_argument("--infer-period", type=float, default=None,
+                        help="Override inference task period in seconds "
+                             f"(default: {INFER_PERIOD}; use e.g. 0.020 for stress test)")
     args = parser.parse_args()
 
     node = NodeB(
@@ -660,6 +682,10 @@ def main():
         no_results=args.no_results,
         duration=args.duration,
         stop_at=args.stop_at,
+        scheduler=args.scheduler,
+        preemptive=args.preemptive,
+        partitioned=args.partitioned,
+        infer_period=args.infer_period,
     )
     node.load_model()
     node.run()

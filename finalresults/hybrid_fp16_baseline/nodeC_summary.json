@@ -1,0 +1,52 @@
+{
+  "node": "nodeC",
+  "mode": "host_fallback",
+  "local": true,
+  "bind_ip": "0.0.0.0",
+  "bind_port": 5002,
+  "debounce_count": 2,
+  "debounce_window_ms": 2000,
+  "watchdog_timeout_ms": 3000,
+  "stats": {
+    "packets_recv": 475,
+    "stop_commands": 475,
+    "go_commands": 0,
+    "actuator_triggers": 237,
+    "watchdog_failsafes": 1,
+    "final_actuator_state": "EMERGENCY_STOP"
+  },
+  "timing": {
+    "recv": {
+      "count": 475,
+      "min_ms": 0.009199997293762863,
+      "avg_ms": 0.017245052624371295,
+      "max_ms": 0.17189999925903976,
+      "p99_ms": 0.04952399918693102
+    },
+    "validate": {
+      "count": 1129,
+      "min_ms": 0.0032000025385059416,
+      "avg_ms": 0.16985606729725056,
+      "max_ms": 3.287100000306964,
+      "p99_ms": 1.2237879986059854
+    },
+    "watchdog": {
+      "count": 323,
+      "min_ms": 0.001400003384333104,
+      "avg_ms": 0.02310959765170023,
+      "max_ms": 5.363299998862203,
+      "p99_ms": 0.04602399552823042
+    }
+  },
+  "overrun_count": 1,
+  "overruns_by_task": {
+    "recv": 1
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 21.817000000737607,
+      "period_ms": 20.0
+    }
+  ]
+}

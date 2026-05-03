@@ -1,0 +1,102 @@
+{
+  "node": "nodeC",
+  "mode": "host_fallback",
+  "local": true,
+  "bind_ip": "0.0.0.0",
+  "bind_port": 5002,
+  "debounce_count": 2,
+  "debounce_window_ms": 2000,
+  "watchdog_timeout_ms": 3000,
+  "stats": {
+    "packets_recv": 476,
+    "stop_commands": 475,
+    "go_commands": 0,
+    "actuator_triggers": 237,
+    "watchdog_failsafes": 1,
+    "final_actuator_state": "EMERGENCY_STOP"
+  },
+  "timing": {
+    "recv": {
+      "count": 476,
+      "min_ms": 0.009699993825051934,
+      "avg_ms": 0.014236554406346566,
+      "max_ms": 0.07619999814778566,
+      "p99_ms": 0.020099998437217437
+    },
+    "validate": {
+      "count": 1133,
+      "min_ms": 0.0027999994927085936,
+      "avg_ms": 0.14696548994221015,
+      "max_ms": 3.388099998119287,
+      "p99_ms": 0.888727999117692
+    },
+    "watchdog": {
+      "count": 323,
+      "min_ms": 0.0011000010999850929,
+      "avg_ms": 0.020701547958650236,
+      "max_ms": 4.712899994046893,
+      "p99_ms": 0.04441399942152199
+    }
+  },
+  "overrun_count": 11,
+  "overruns_by_task": {
+    "recv": 11
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 20.51150000625057,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.034900004859082,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.07650000147987,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.596199993335176,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.087699999450706,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 22.497600002679974,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.151400000031572,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.956099997623824,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 24.68829999997979,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 24.647500002174638,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 24.050599997281097,
+      "period_ms": 20.0
+    }
+  ]
+}

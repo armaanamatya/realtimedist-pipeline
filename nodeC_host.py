@@ -19,6 +19,7 @@ import time
 import numpy as np
 
 from results_logging import ResultsLogger, timing_stats
+from scheduler import CooperativeScheduler, ScheduledTask, WindowsThreadScheduler
 
 # ============================================================
 # CONFIGURATION
@@ -44,11 +45,15 @@ WATCHDOG_PERIOD = 0.100       # 100ms — tWatchdog
 
 class NodeC:
     def __init__(self, local=False, results_dir="results", run_id=None,
-                 no_results=False, duration=None, stop_at=None):
+                 no_results=False, duration=None, stop_at=None,
+                 scheduler="rms", preemptive=False):
         self.local = local
         self.bind_ip = "0.0.0.0" if local else NODE_C_IP
         self.duration = duration
         self.stop_at = stop_at
+        self.scheduler_policy = scheduler
+        self.preemptive = preemptive
+        self._scheduler = None
         self._running = threading.Event()
 
         # Received commands queue
@@ -91,28 +96,6 @@ class NodeC:
                 "note",
             ],
         )
-
-    def _periodic_loop(self, name, func, period):
-        while self._running.is_set():
-            t_start = time.perf_counter()
-            func()
-            elapsed = time.perf_counter() - t_start
-            sleep_time = period - elapsed
-            if sleep_time > 0:
-                time.sleep(sleep_time)
-            else:
-                elapsed_ms = elapsed * 1000
-                period_ms = period * 1000
-                self.timing["overruns"].append((name, elapsed_ms, period_ms))
-                if self._events_csv:
-                    self._events_csv.writerow({
-                        "event": "overrun",
-                        "action": name,
-                        "elapsed_ms": f"{elapsed_ms:.3f}",
-                        "since_last_ms": f"{period_ms:.3f}",
-                        "actuator_state": self._actuator_state,
-                        "timestamp_perf": f"{time.perf_counter():.6f}",
-                    })
 
     # ---- Task 1: tUdpReceive (sporadic, polled at 20ms) ----
     def _udp_receive(self):
@@ -260,12 +243,14 @@ class NodeC:
     def run(self):
         self.sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         self.sock.bind((self.bind_ip, NODE_C_PORT))
-        self.sock.settimeout(0.01)
+        self.sock.settimeout(0.005)  # 5ms — keeps cooperative scheduler responsive
 
         print(f"\n{'='*50}")
         print(f"  Node C — Actuator Control (Host Fallback)")
         print(f"{'='*50}")
         print(f"  Listening: {self.bind_ip}:{NODE_C_PORT}")
+        mode_str = "preemptive/OS threads" if self.preemptive else "cooperative"
+        print(f"  Scheduler: {self.scheduler_policy.upper()} ({mode_str})")
         print(f"  Debounce: {DEBOUNCE_COUNT} consecutive STOP within {DEBOUNCE_WINDOW_MS}ms")
         print(f"  Watchdog: failsafe after {WATCHDOG_TIMEOUT_MS}ms silence")
         if self._results.enabled:
@@ -275,19 +260,23 @@ class NodeC:
         self._running.set()
         self._last_packet_time = time.perf_counter()
 
-        threads = [
-            threading.Thread(target=self._periodic_loop,
-                             args=("recv", self._udp_receive, RECV_PERIOD),
-                             daemon=True),
-            threading.Thread(target=self._periodic_loop,
-                             args=("validate", self._safety_validate, VALIDATE_PERIOD),
-                             daemon=True),
-            threading.Thread(target=self._periodic_loop,
-                             args=("watchdog", self._watchdog, WATCHDOG_PERIOD),
-                             daemon=True),
+        # WCET estimates for LLF laxity: conservative measured maxima (seconds)
+        sched_tasks = [
+            ScheduledTask("recv",     RECV_PERIOD,     0.003, self._udp_receive,    priority=1),
+            ScheduledTask("validate", VALIDATE_PERIOD, 0.005, self._safety_validate, priority=2),
+            ScheduledTask("watchdog", WATCHDOG_PERIOD, 0.002, self._watchdog,        priority=3),
         ]
-        for t in threads:
-            t.start()
+        if self.preemptive:
+            self._scheduler = WindowsThreadScheduler(
+                sched_tasks, policy=self.scheduler_policy,
+                partitioned=self.partitioned,
+            )
+        else:
+            self._scheduler = CooperativeScheduler(sched_tasks, policy=self.scheduler_policy)
+        sched_thread = threading.Thread(
+            target=self._scheduler.run, args=(self._running,), daemon=True
+        )
+        sched_thread.start()
 
         completed = False
         deadline = time.perf_counter() + self.duration if self.duration is not None else None
@@ -316,12 +305,28 @@ class NodeC:
         self._running.clear()
         time.sleep(0.2)
         self.sock.close()
+
+        # Collect overruns recorded by the cooperative scheduler
+        if self._scheduler is not None:
+            for name, elapsed_ms, period_ms in self._scheduler.all_overruns():
+                self.timing["overruns"].append((name, elapsed_ms, period_ms))
+                if self._events_csv:
+                    self._events_csv.writerow({
+                        "event": "overrun",
+                        "action": name,
+                        "elapsed_ms": f"{elapsed_ms:.3f}",
+                        "since_last_ms": f"{period_ms:.3f}",
+                        "actuator_state": self._actuator_state,
+                        "timestamp_perf": f"{time.perf_counter():.6f}",
+                    })
+
         self.print_summary()
         self._results.close()
 
     def print_summary(self):
+        mode_str = "preemptive" if self.preemptive else "cooperative"
         print(f"\n{'='*60}")
-        print(f"  Node C Summary (Host Fallback)")
+        print(f"  Node C Summary | Scheduler: {self.scheduler_policy.upper()} ({mode_str})")
         print(f"{'='*60}")
         print(f"  Packets received:     {self.stats['packets_recv']}")
         print(f"  STOP commands:        {self.stats['stop_commands']}")
@@ -351,6 +356,8 @@ class NodeC:
         self._results.write_summary("nodeC_summary.json", {
             "node": "nodeC",
             "mode": "host_fallback",
+            "scheduler_policy": self.scheduler_policy,
+            "scheduler_preemptive": self.preemptive,
             "local": self.local,
             "bind_ip": self.bind_ip,
             "bind_port": NODE_C_PORT,
@@ -392,6 +399,14 @@ def main():
     parser.add_argument("--duration", type=float, default=None,
                         help="Run duration in seconds before clean shutdown")
     parser.add_argument("--stop-at", type=float, default=None, help=argparse.SUPPRESS)
+    parser.add_argument("--scheduler", choices=["rms", "edf", "llf"], default="rms",
+                        help="Scheduling policy: rms (default), edf, or llf")
+    parser.add_argument("--preemptive", action="store_true",
+                        help="Use Windows OS thread priorities for real preemption "
+                             "(Windows only; cooperative mode used otherwise)")
+    parser.add_argument("--partitioned", action="store_true",
+                        help="Pin each task thread to a dedicated CPU core "
+                             "(partitioned multiprocessor scheduling; requires --preemptive)")
     args = parser.parse_args()
 
     node = NodeC(
@@ -401,6 +416,9 @@ def main():
         no_results=args.no_results,
         duration=args.duration,
         stop_at=args.stop_at,
+        scheduler=args.scheduler,
+        preemptive=args.preemptive,
+        partitioned=args.partitioned,
     )
     node.run()
 
