@@ -1,6 +1,8 @@
 # Local assistant/tooling state
 .claude/
 CLAUDE.md
+*.md
+*.tex
 
 # Python environments and caches
 venv/
@@ -17,3 +19,5 @@ artifacts/
 
 # Scratch/work-in-progress notes
 tmp/
+finalresults/impairment_sweep/sweep_summary.md
+finalresults/impairment_sweep_BROKEN_no_torch/sweep_summary.md

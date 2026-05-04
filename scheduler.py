@@ -20,10 +20,23 @@ from typing import Callable, Dict, List, Optional
 _IS_WINDOWS = platform.system() == "Windows"
 if _IS_WINDOWS:
     _kernel32 = ctypes.WinDLL("kernel32", use_last_error=True)
-    # DUPLICATE_SAME_ACCESS flag for DuplicateHandle
     _DUPLICATE_SAME_ACCESS = 0x00000002
-    # Above-normal process priority (no elevation required)
     _ABOVE_NORMAL_PRIORITY_CLASS = 0x00008000
+    # Correct restype so 64-bit pseudo-handles aren't truncated to 32-bit
+    _kernel32.GetCurrentProcess.restype = ctypes.wintypes.HANDLE
+    _kernel32.GetCurrentThread.restype = ctypes.wintypes.HANDLE
+    _kernel32.DuplicateHandle.restype = ctypes.wintypes.BOOL
+    _kernel32.DuplicateHandle.argtypes = [
+        ctypes.wintypes.HANDLE, ctypes.wintypes.HANDLE, ctypes.wintypes.HANDLE,
+        ctypes.POINTER(ctypes.wintypes.HANDLE), ctypes.wintypes.DWORD,
+        ctypes.wintypes.BOOL, ctypes.wintypes.DWORD,
+    ]
+    _kernel32.SetPriorityClass.restype = ctypes.wintypes.BOOL
+    _kernel32.SetPriorityClass.argtypes = [ctypes.wintypes.HANDLE, ctypes.wintypes.DWORD]
+    _kernel32.SetThreadPriority.restype = ctypes.wintypes.BOOL
+    _kernel32.SetThreadPriority.argtypes = [ctypes.wintypes.HANDLE, ctypes.c_int]
+    _kernel32.SetThreadAffinityMask.restype = ctypes.c_size_t
+    _kernel32.SetThreadAffinityMask.argtypes = [ctypes.wintypes.HANDLE, ctypes.c_size_t]
 
 
 class ScheduledTask:
@@ -226,22 +239,25 @@ class WindowsThreadScheduler:
     # ------------------------------------------------------------------
 
     def _task_loop(self, task: ScheduledTask, running: threading.Event) -> None:
-        real_handle = self._duplicate_current_thread_handle()
-        self._handles[task.name] = real_handle
+        try:
+            real_handle = self._duplicate_current_thread_handle()
+            self._handles[task.name] = real_handle
+        except OSError:
+            real_handle = None
 
-        # RMS: fixed priority set once here; EDF/LLF: manager overrides later
-        if self.policy == "rms":
-            idx = min(task.priority - 1, len(self._WIN_PRIORITIES) - 1)
-            self._set_thread_priority(real_handle, self._WIN_PRIORITIES[idx])
+        if real_handle is not None:
+            # RMS: fixed priority set once here; EDF/LLF: manager overrides later
+            if self.policy == "rms":
+                idx = min(task.priority - 1, len(self._WIN_PRIORITIES) - 1)
+                self._set_thread_priority(real_handle, self._WIN_PRIORITIES[idx])
 
-        # Partitioned: pin this thread to a dedicated core (core = priority index,
-        # starting at 1 to leave core 0 available for the OS).
-        if self.partitioned:
-            core = min(task.priority, self._num_cpus - 1)
-            mask = ctypes.c_size_t(1 << core)
-            if not _kernel32.SetThreadAffinityMask(real_handle, mask):
-                print(f"  WARNING: SetThreadAffinityMask failed for {task.name} "
-                      f"(core {core})")
+            # Partitioned: pin this thread to a dedicated core
+            if self.partitioned:
+                core = min(task.priority, self._num_cpus - 1)
+                mask = ctypes.c_size_t(1 << core)
+                if not _kernel32.SetThreadAffinityMask(real_handle, mask):
+                    print(f"  WARNING: SetThreadAffinityMask failed for {task.name} "
+                          f"(core {core})")
 
         next_release = time.perf_counter()
         task.next_release = next_release
