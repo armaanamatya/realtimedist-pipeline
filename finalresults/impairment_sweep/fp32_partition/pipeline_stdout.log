@@ -1,0 +1,115 @@
+
+==================================================
+  Node C — Actuator Control (Host Fallback)
+==================================================
+  Listening: 0.0.0.0:5002
+  Scheduler: RMS (cooperative)
+  Debounce: 2 consecutive STOP within 2000ms
+  Watchdog: failsafe after 3000ms silence
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_partition
+  Press Ctrl+C to stop.
+
+
+==================================================
+  UDP Proxy — Network Impairment Injector
+==================================================
+  Profile:     partition
+  Jitter:      0±0 ms
+  Packet loss: 100.0%
+
+
+  Proxy running. Press Ctrl+C to stop.
+
+  proxy/hop1 (A->B): :6001 -> 127.0.0.1:5001 [jitter=0±0ms, loss=100.0%]
+  proxy/hop2 (B->C): :6002 -> 127.0.0.1:5002 [jitter=0±0ms, loss=100.0%]
+
+  *** WATCHDOG FAILSAFE *** No packet in 3076ms — triggering emergency stop
+
+nodeB: Loading model superb/wav2vec2-base-superb-ks ...
+nodeB: Precision = FP32
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/216 [00:00<?, ?it/s]Loading weights: 100%|##########| 216/216 [00:00<00:00, 47655.02it/s]
+nodeB: Using GPU — NVIDIA GeForce RTX 5060 Ti
+nodeB: Running warm-up inference ...
+nodeB: Warm-up complete.
+
+nodeB: Listening on 0.0.0.0:5001
+nodeB: Sending to 127.0.0.1:6002
+nodeB: Scheduler policy = RMS
+nodeB: Results -> C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_partition
+nodeB: All tasks running — RMS (cooperative). Press Ctrl+C to stop.
+
+nodeA: Loaded stop_clean.wav — 16000 samples (1.00s)
+
+==================================================
+  Node A — Audio Sensor (Host Fallback)
+==================================================
+  Target: 127.0.0.1:6001
+  Tasks: tAudioSample(10ms) tFeatureExtract(20ms) tUdpTransmit(20ms)
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_partition
+  Press Ctrl+C to stop.
+
+  proxy/hop1 (A->B): DROPPED packet (total dropped: 1)
+  nodeA: sent packet #10 | ring=320/16000
+  proxy/hop1 (A->B): DROPPED packet (total dropped: 11)
+
+nodeB: Duration complete; shutting down ...
+nodeC: Duration complete; shutting down ...
+
+nodeA: Duration complete; shutting down ...
+
+
+============================================================
+
+============================================================  Node A Summary (Host Fallback)
+
+============================================================
+  Node B Summary — Precision: FP32 | Scheduler: RMS (cooperative)
+
+============================================================
+  Samples read:   304160============================================================
+  Packets received:    0
+  Inferences run:      0
+  Node C Summary | Scheduler: RMS (cooperative)
+
+  Chunks sent:    18  Commands forwarded:  0
+
+============================================================
+
+  Packets received:     0
+  STOP commands:        0
+  recv          (no data)
+  GO commands:          0
+  Actuator triggers:    0
+  inference     (no data)
+  send          (no data)  Watchdog failsafes:   1
+  Final actuator state: FAILSAFE_STOP
+
+  recv          (no data)
+
+  Overruns: 9 total
+    recv: 1
+    send: 8
+============================================================
+  sample        min=0.03ms  avg=0.12ms  max=0.99ms  p99=0.63ms  n=1901
+  validate      min=0.00ms  avg=0.00ms  max=0.21ms  p99=0.02ms  n=2282
+  extract       min=0.00ms  avg=0.09ms  max=8.87ms  p99=3.03ms  n=959
+  watchdog      min=0.00ms  avg=0.00ms  max=0.52ms  p99=0.01ms  n=457
+  Overruns: 2
+============================================================
+  transmit      min=0.14ms  avg=0.46ms  max=1.02ms  p99=0.99ms  n=18
+  Overruns: 0
+============================================================
+[pipeline] Results -> C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_partition
+[pipeline] Starting Node C ...
+[pipeline] Starting UDP proxy (mode=partition) ...
+[pipeline] Starting Node B (precision=fp32) ...
+[pipeline] Waiting for Node B model to load ...
+[pipeline] Starting Node A ...
+
+[pipeline] All nodes running. Will stop in 30s ...
+
+
+[pipeline] Shutting down all nodes ...
+  Terminated Proxy (pid=37952)
+[pipeline] Done.

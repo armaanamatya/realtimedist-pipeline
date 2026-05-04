@@ -1,0 +1,36 @@
+{
+  "node": "nodeA",
+  "mode": "host_fallback",
+  "target_ip": "127.0.0.1",
+  "target_port": 6001,
+  "local": true,
+  "stats": {
+    "samples_read": 303040,
+    "chunks_sent": 18
+  },
+  "timing": {
+    "sample": {
+      "count": 1894,
+      "min_ms": 0.032199983252212405,
+      "avg_ms": 0.1522307284791003,
+      "max_ms": 4.27299999864772,
+      "p99_ms": 0.6895980102126485
+    },
+    "extract": {
+      "count": 958,
+      "min_ms": 0.001200009137392044,
+      "avg_ms": 0.06443298534691404,
+      "max_ms": 5.396199994720519,
+      "p99_ms": 2.5543280117562928
+    },
+    "transmit": {
+      "count": 18,
+      "min_ms": 0.1931999868247658,
+      "avg_ms": 0.4790388856134895,
+      "max_ms": 1.0068999836221337,
+      "p99_ms": 1.005131985002663
+    }
+  },
+  "overrun_count": 0,
+  "overruns": []
+}

@@ -1,0 +1,100 @@
+{
+  "node": "nodeB",
+  "precision": "fp16",
+  "scheduler_policy": "rms",
+  "scheduler_preemptive": false,
+  "scheduler_partitioned": false,
+  "infer_period_ms": 50.0,
+  "confidence_threshold": 0.85,
+  "local": true,
+  "test_mode": false,
+  "target_port": 6002,
+  "stats": {
+    "packets_recv": 0,
+    "inferences_run": 0,
+    "commands_sent": 0,
+    "commands_forwarded": 0
+  },
+  "timing": {
+    "recv": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    },
+    "inference": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    },
+    "send": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    },
+    "e2e": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    }
+  },
+  "overrun_count": 9,
+  "overruns_by_task": {
+    "recv": 5,
+    "send": 4
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 20.036700007040054,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.171100011793897,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.190199982607737,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.65349998883903,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.626000001560897,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 30.721399991307408,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 20.402599999215454,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 20.484199980273843,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 20.86700001382269,
+      "period_ms": 20.0
+    }
+  ]
+}

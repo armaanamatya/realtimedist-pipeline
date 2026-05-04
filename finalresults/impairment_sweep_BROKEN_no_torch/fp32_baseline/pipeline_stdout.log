@@ -1,0 +1,89 @@
+
+==================================================
+  Node C — Actuator Control (Host Fallback)
+==================================================
+  Listening: 0.0.0.0:5002
+  Scheduler: RMS (cooperative)
+  Debounce: 2 consecutive STOP within 2000ms
+  Watchdog: failsafe after 3000ms silence
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_baseline
+  Press Ctrl+C to stop.
+
+
+==================================================
+  UDP Proxy — Network Impairment Injector
+==================================================
+  Profile:     baseline
+  Jitter:      0±0 ms
+  Packet loss: 0.0%
+
+
+  Proxy running. Press Ctrl+C to stop.
+
+  proxy/hop2 (B->C): :6002 -> 127.0.0.1:5002 [jitter=0±0ms, loss=0.0%]
+  proxy/hop1 (A->B): :6001 -> 127.0.0.1:5001 [jitter=0±0ms, loss=0.0%]
+Traceback (most recent call last):
+  File "C:\Users\Armaan\Desktop\4331project\nodeB.py", line 695, in <module>
+    main()
+  File "C:\Users\Armaan\Desktop\4331project\nodeB.py", line 690, in main
+    node.load_model()
+  File "C:\Users\Armaan\Desktop\4331project\nodeB.py", line 182, in load_model
+    import torch
+ModuleNotFoundError: No module named 'torch'
+
+  *** WATCHDOG FAILSAFE *** No packet in 3077ms — triggering emergency stop
+
+nodeA: Loaded stop_clean.wav — 16000 samples (1.00s)
+
+==================================================
+  Node A — Audio Sensor (Host Fallback)
+==================================================
+  Target: 127.0.0.1:6001
+  Tasks: tAudioSample(10ms) tFeatureExtract(20ms) tUdpTransmit(20ms)
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_baseline
+  Press Ctrl+C to stop.
+
+  nodeA: sent packet #10 | ring=480/16000
+
+nodeC: Duration complete; shutting down ...
+
+nodeA: Duration complete; shutting down ...
+
+============================================================
+  Node A Summary (Host Fallback)
+============================================================
+  Samples read:   302240
+  Chunks sent:    18
+
+============================================================
+  Node C Summary | Scheduler: RMS (cooperative)
+============================================================
+  Packets received:     0
+  STOP commands:        0
+  GO commands:          0
+  Actuator triggers:    0
+  Watchdog failsafes:   1
+  Final actuator state: FAILSAFE_STOP
+  recv          (no data)
+  validate      min=0.00ms  avg=0.00ms  max=0.17ms  p99=0.01ms  n=2280
+  sample        min=0.03ms  avg=0.09ms  max=0.47ms  p99=0.34ms  n=1889
+  watchdog      min=0.00ms  avg=0.00ms  max=0.21ms  p99=0.01ms  n=456
+  Overruns: 19
+============================================================
+  extract       min=0.00ms  avg=0.05ms  max=4.33ms  p99=1.98ms  n=992
+  transmit      min=0.21ms  avg=0.37ms  max=0.61ms  p99=0.59ms  n=18
+  Overruns: 0
+============================================================
+[pipeline] Results -> C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp32_baseline
+[pipeline] Starting Node C ...
+[pipeline] Starting UDP proxy (mode=baseline) ...
+[pipeline] Starting Node B (precision=fp32) ...
+[pipeline] Waiting for Node B model to load ...
+[pipeline] Starting Node A ...
+
+[pipeline] All nodes running. Will stop in 30s ...
+
+
+[pipeline] Shutting down all nodes ...
+  Terminated Proxy (pid=14928)
+[pipeline] Done.

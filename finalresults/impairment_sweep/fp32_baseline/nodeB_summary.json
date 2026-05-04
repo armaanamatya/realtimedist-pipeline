@@ -1,0 +1,196 @@
+{
+  "node": "nodeB",
+  "precision": "fp32",
+  "scheduler_policy": "rms",
+  "scheduler_preemptive": false,
+  "scheduler_partitioned": false,
+  "infer_period_ms": 50.0,
+  "confidence_threshold": 0.85,
+  "local": true,
+  "test_mode": false,
+  "target_port": 6002,
+  "stats": {
+    "packets_recv": 18,
+    "inferences_run": 18,
+    "commands_sent": 18,
+    "commands_forwarded": 18
+  },
+  "timing": {
+    "recv": {
+      "count": 18,
+      "min_ms": 0.051700015319511294,
+      "avg_ms": 0.24063889092455307,
+      "max_ms": 2.1711000008508563,
+      "p99_ms": 1.8663920011022097
+    },
+    "inference": {
+      "count": 18,
+      "min_ms": 26.658099988708273,
+      "avg_ms": 51.61957777616206,
+      "max_ms": 75.11219999287277,
+      "p99_ms": 73.96910299168665
+    },
+    "send": {
+      "count": 18,
+      "min_ms": 0.11850000009872019,
+      "avg_ms": 0.41255555536028826,
+      "max_ms": 1.5986000071279705,
+      "p99_ms": 1.4890010087401595
+    },
+    "e2e": {
+      "count": 18,
+      "min_ms": 27.382700005546212,
+      "avg_ms": 52.032133331522346,
+      "max_ms": 76.06610000948422,
+      "p99_ms": 74.81841900356811
+    }
+  },
+  "overrun_count": 28,
+  "overruns_by_task": {
+    "recv": 6,
+    "inference": 12,
+    "send": 10
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 20.93779999995604,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.47919999738224,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 22.515700024086982,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.65230000880547,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.753199991304427,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.52010002080351,
+      "period_ms": 20.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 75.30939998105168,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 55.73399999411777,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 54.95319998590276,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 63.940899999579415,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 65.78710000030696,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 62.93459999142215,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 68.49020000663586,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 64.65330001083203,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 65.67749998066574,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 64.19780000578612,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 58.36830000043847,
+      "period_ms": 50.0
+    },
+    {
+      "task": "inference",
+      "elapsed_ms": 64.71659999806434,
+      "period_ms": 50.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 22.071899991715327,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 28.693800006294623,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 28.73709998675622,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 27.17099999426864,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 27.849300007801503,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 27.42150000995025,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 27.689100010320544,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 28.079899988370016,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 20.61479998519644,
+      "period_ms": 20.0
+    },
+    {
+      "task": "send",
+      "elapsed_ms": 21.31000001099892,
+      "period_ms": 20.0
+    }
+  ]
+}

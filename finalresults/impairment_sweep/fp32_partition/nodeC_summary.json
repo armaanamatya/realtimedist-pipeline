@@ -1,0 +1,59 @@
+{
+  "node": "nodeC",
+  "mode": "host_fallback",
+  "scheduler_policy": "rms",
+  "scheduler_preemptive": false,
+  "local": true,
+  "bind_ip": "0.0.0.0",
+  "bind_port": 5002,
+  "debounce_count": 2,
+  "debounce_window_ms": 2000,
+  "watchdog_timeout_ms": 3000,
+  "stats": {
+    "packets_recv": 0,
+    "stop_commands": 0,
+    "go_commands": 0,
+    "actuator_triggers": 0,
+    "watchdog_failsafes": 1,
+    "final_actuator_state": "FAILSAFE_STOP"
+  },
+  "timing": {
+    "recv": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    },
+    "validate": {
+      "count": 2282,
+      "min_ms": 0.000200001522898674,
+      "avg_ms": 0.0032684491042498298,
+      "max_ms": 0.20780001068487763,
+      "p99_ms": 0.0200190069153905
+    },
+    "watchdog": {
+      "count": 457,
+      "min_ms": 0.00100000761449337,
+      "avg_ms": 0.0037601758563927737,
+      "max_ms": 0.518000015290454,
+      "p99_ms": 0.008219991577789186
+    }
+  },
+  "overrun_count": 2,
+  "overruns_by_task": {
+    "recv": 2
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 21.26130001852289,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.00330001465045,
+      "period_ms": 20.0
+    }
+  ]
+}

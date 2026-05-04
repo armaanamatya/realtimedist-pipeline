@@ -1,0 +1,178 @@
+
+==================================================
+  Node C — Actuator Control (Host Fallback)
+==================================================
+  Listening: 0.0.0.0:5002
+  Scheduler: RMS (cooperative)
+  Debounce: 2 consecutive STOP within 2000ms
+  Watchdog: failsafe after 3000ms silence
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp16_baseline
+  Press Ctrl+C to stop.
+
+
+==================================================
+  UDP Proxy — Network Impairment Injector
+==================================================
+  Profile:     baseline
+  Jitter:      0±0 ms
+  Packet loss: 0.0%
+
+
+  Proxy running. Press Ctrl+C to stop.
+
+  proxy/hop2 (B->C): :6002 -> 127.0.0.1:5002 [jitter=0±0ms, loss=0.0%]  proxy/hop1 (A->B): :6001 -> 127.0.0.1:5001 [jitter=0±0ms, loss=0.0%]
+
+
+  *** WATCHDOG FAILSAFE *** No packet in 3036ms — triggering emergency stop
+
+nodeB: Loading model superb/wav2vec2-base-superb-ks ...
+nodeB: Precision = FP16
+Warning: You are sending unauthenticated requests to the HF Hub. Please set a HF_TOKEN to enable higher rate limits and faster downloads.
+Loading weights:   0%|          | 0/216 [00:00<?, ?it/s]Loading weights: 100%|##########| 216/216 [00:00<00:00, 85646.59it/s]
+nodeB: Using GPU — NVIDIA GeForce RTX 5060 Ti
+nodeB: Model converted to FP16
+nodeB: Running warm-up inference ...
+nodeB: Warm-up complete.
+
+nodeB: Listening on 0.0.0.0:5001
+nodeB: Sending to 127.0.0.1:6002
+nodeB: Scheduler policy = RMS
+nodeB: Results -> C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp16_baseline
+nodeB: All tasks running — RMS (cooperative). Press Ctrl+C to stop.
+
+nodeA: Loaded stop_clean.wav — 16000 samples (1.00s)
+
+==================================================
+  Node A — Audio Sensor (Host Fallback)
+==================================================
+  Target: 127.0.0.1:6001
+  Tasks: tAudioSample(10ms) tFeatureExtract(20ms) tUdpTransmit(20ms)
+  Results: C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp16_baseline
+  Press Ctrl+C to stop.
+
+  inference: stop       conf=0.999 time=52.6ms cmd=STOP fwd=True
+  nodeC: recv #0 cmd=STOP conf=0.999
+  inference: stop       conf=0.999 time=34.0ms cmd=STOP fwd=True
+  nodeC: recv #1 cmd=STOP conf=0.999
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=1 conf=0.999) (processing=0.5ms)
+
+  inference: stop       conf=0.999 time=33.3ms cmd=STOP fwd=True
+  nodeC: recv #2 cmd=STOP conf=0.999
+  inference: stop       conf=1.000 time=35.7ms cmd=STOP fwd=True
+  nodeC: recv #3 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=3 conf=1.000) (processing=0.1ms)
+
+  inference: stop       conf=0.999 time=33.3ms cmd=STOP fwd=True
+  nodeC: recv #4 cmd=STOP conf=0.999
+  inference: stop       conf=1.000 time=32.8ms cmd=STOP fwd=True
+  nodeC: recv #5 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=5 conf=1.000) (processing=0.2ms)
+
+  inference: stop       conf=1.000 time=32.3ms cmd=STOP fwd=True
+  nodeC: recv #6 cmd=STOP conf=1.000
+  inference: stop       conf=1.000 time=34.4ms cmd=STOP fwd=True
+  nodeC: recv #7 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=7 conf=1.000) (processing=0.1ms)
+
+  inference: stop       conf=1.000 time=33.1ms cmd=STOP fwd=True
+  nodeC: recv #8 cmd=STOP conf=1.000
+  nodeA: sent packet #10 | ring=160/16000
+  inference: stop       conf=1.000 time=32.1ms cmd=STOP fwd=True
+  nodeC: recv #9 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=9 conf=1.000) (processing=0.2ms)
+
+  inference: stop       conf=1.000 time=33.1ms cmd=STOP fwd=True
+  nodeC: recv #10 cmd=STOP conf=1.000
+  inference: stop       conf=1.000 time=33.8ms cmd=STOP fwd=True
+  nodeC: recv #11 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=11 conf=1.000) (processing=0.6ms)
+
+  inference: stop       conf=1.000 time=32.2ms cmd=STOP fwd=True
+  nodeC: recv #12 cmd=STOP conf=1.000
+  inference: stop       conf=1.000 time=35.2ms cmd=STOP fwd=True
+  nodeC: recv #13 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=13 conf=1.000) (processing=0.1ms)
+
+  inference: stop       conf=1.000 time=32.7ms cmd=STOP fwd=True
+  nodeC: recv #14 cmd=STOP conf=1.000
+  inference: stop       conf=1.000 time=32.5ms cmd=STOP fwd=True
+  nodeC: recv #15 cmd=STOP conf=1.000
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=15 conf=1.000) (processing=0.1ms)
+
+  inference: stop       conf=0.999 time=33.9ms cmd=STOP fwd=True
+  nodeC: recv #16 cmd=STOP conf=0.999
+  inference: stop       conf=0.999 time=33.3ms cmd=STOP fwd=True
+  nodeC: recv #17 cmd=STOP conf=0.999
+
+  *** ACTUATOR: EMERGENCY_STOP *** (seq=17 conf=0.999) (processing=0.1ms)
+
+
+nodeA: Duration complete; shutting down ...
+nodeC: Duration complete; shutting down ...
+nodeB: Duration complete; shutting down ...
+
+
+
+============================================================
+============================================================
+  Node A Summary (Host Fallback)
+============================================================
+
+  Samples read:   303680
+  Chunks sent:    18
+  Node B Summary — Precision: FP16 | Scheduler: RMS (cooperative)
+============================================================
+============================================================
+  Node C Summary | Scheduler: RMS (cooperative)
+
+============================================================  Packets received:    18
+
+  Packets received:     18  Inferences run:      18  sample        min=0.03ms  avg=0.15ms  max=0.76ms  p99=0.58ms  n=1898
+
+
+  STOP commands:        18
+  extract       min=0.00ms  avg=0.10ms  max=7.61ms  p99=4.39ms  n=958  GO commands:          0  Commands forwarded:  18
+
+
+  transmit      min=0.17ms  avg=0.45ms  max=1.19ms  p99=1.19ms  n=18
+  Overruns: 0
+============================================================
+  Actuator triggers:    9
+  Watchdog failsafes:   1
+
+  Final actuator state: EMERGENCY_STOP
+  recv          min=0.06ms  avg=0.10ms  max=0.25ms  p99=0.24ms  n=18
+  recv          min=0.01ms  avg=0.02ms  max=0.07ms  p99=0.06ms  n=18
+  inference     min=32.07ms  avg=34.46ms  max=52.61ms  p99=49.73ms  n=18
+  send          min=0.08ms  avg=0.42ms  max=1.05ms  p99=1.00ms  n=18
+
+  Overruns: 12 total
+    recv: 4
+    inference: 1
+    send: 7  validate      min=0.00ms  avg=0.00ms  max=0.23ms  p99=0.02ms  n=2283
+
+============================================================
+  watchdog      min=0.00ms  avg=0.00ms  max=0.21ms  p99=0.01ms  n=457
+  Overruns: 6
+============================================================
+[pipeline] Results -> C:\Users\Armaan\Desktop\4331project\finalresults\impairment_sweep\fp16_baseline
+[pipeline] Starting Node C ...
+[pipeline] Starting UDP proxy (mode=baseline) ...
+[pipeline] Starting Node B (precision=fp16) ...
+[pipeline] Waiting for Node B model to load ...
+[pipeline] Starting Node A ...
+
+[pipeline] All nodes running. Will stop in 30s ...
+
+
+[pipeline] Shutting down all nodes ...
+  Terminated Proxy (pid=19940)
+[pipeline] Done.

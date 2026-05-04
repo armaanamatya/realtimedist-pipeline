@@ -1,0 +1,84 @@
+{
+  "node": "nodeC",
+  "mode": "host_fallback",
+  "scheduler_policy": "rms",
+  "scheduler_preemptive": false,
+  "local": true,
+  "bind_ip": "0.0.0.0",
+  "bind_port": 5002,
+  "debounce_count": 2,
+  "debounce_window_ms": 2000,
+  "watchdog_timeout_ms": 3000,
+  "stats": {
+    "packets_recv": 12,
+    "stop_commands": 12,
+    "go_commands": 0,
+    "actuator_triggers": 4,
+    "watchdog_failsafes": 5,
+    "final_actuator_state": "FAILSAFE_STOP"
+  },
+  "timing": {
+    "recv": {
+      "count": 12,
+      "min_ms": 0.012200005585327744,
+      "avg_ms": 0.02288333053002134,
+      "max_ms": 0.031400006264448166,
+      "p99_ms": 0.031334005761891603
+    },
+    "validate": {
+      "count": 2285,
+      "min_ms": 0.00019997241906821728,
+      "avg_ms": 0.003544376277582846,
+      "max_ms": 0.28989999555051327,
+      "p99_ms": 0.02021600841544567
+    },
+    "watchdog": {
+      "count": 457,
+      "min_ms": 0.0010999792721122503,
+      "avg_ms": 0.0037868701826365304,
+      "max_ms": 0.20149999181739986,
+      "p99_ms": 0.05866399500519029
+    }
+  },
+  "overrun_count": 7,
+  "overruns_by_task": {
+    "recv": 7
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 20.97219999996014,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.072100003948435,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.150099997408688,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.948799996403977,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.882600016193464,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.020599990151823,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.19589998619631,
+      "period_ms": 20.0
+    }
+  ]
+}

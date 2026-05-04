@@ -1,0 +1,159 @@
+{
+  "node": "nodeC",
+  "mode": "host_fallback",
+  "scheduler_policy": "rms",
+  "scheduler_preemptive": false,
+  "local": true,
+  "bind_ip": "0.0.0.0",
+  "bind_port": 5002,
+  "debounce_count": 2,
+  "debounce_window_ms": 2000,
+  "watchdog_timeout_ms": 3000,
+  "stats": {
+    "packets_recv": 0,
+    "stop_commands": 0,
+    "go_commands": 0,
+    "actuator_triggers": 0,
+    "watchdog_failsafes": 1,
+    "final_actuator_state": "FAILSAFE_STOP"
+  },
+  "timing": {
+    "recv": {
+      "count": 0,
+      "min_ms": null,
+      "avg_ms": null,
+      "max_ms": null,
+      "p99_ms": null
+    },
+    "validate": {
+      "count": 2285,
+      "min_ms": 0.000200001522898674,
+      "avg_ms": 0.003816061095320324,
+      "max_ms": 0.39289999403990805,
+      "p99_ms": 0.0208320084493607
+    },
+    "watchdog": {
+      "count": 457,
+      "min_ms": 0.000200001522898674,
+      "avg_ms": 0.0037269152092586394,
+      "max_ms": 0.3209999995306134,
+      "p99_ms": 0.008799992501735687
+    }
+  },
+  "overrun_count": 22,
+  "overruns_by_task": {
+    "recv": 22
+  },
+  "overruns": [
+    {
+      "task": "recv",
+      "elapsed_ms": 22.28510001441464,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.85800000349991,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.46259999042377,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.76179999858141,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.207900000968948,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 22.483699984150007,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.46410000184551,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.560800010571256,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.216900011291727,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 23.462400014977902,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.832199981668964,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 22.82560002640821,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.105800009332597,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.263399987015873,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.393700018757954,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.26220000698231,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.05490000010468,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.169800001895055,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.12030002172105,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.642399991629645,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 20.293000008678064,
+      "period_ms": 20.0
+    },
+    {
+      "task": "recv",
+      "elapsed_ms": 21.25809999415651,
+      "period_ms": 20.0
+    }
+  ]
+}
